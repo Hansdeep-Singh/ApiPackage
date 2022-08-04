@@ -11,6 +11,7 @@ namespace GoogleOAuth
             var query = new QueryBuilder();
             query.Add("response_type", "code");
             query.Add("client_id", clientId);
+
             query.Add("scope", "openid profile email");
             query.Add("redirect_uri", redirectUri);
             return query.ToString();

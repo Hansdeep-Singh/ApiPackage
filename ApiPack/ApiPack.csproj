@@ -3,13 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RepositoryUrl>https://github.com/Hansdeep-Singh/ApiPackage</RepositoryUrl>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="SendGrid" Version="9.24.4" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
+    <ProjectReference Include="..\EfficasySend\EfficacySend.csproj" />
+    <ProjectReference Include="..\GoogleOAuth\GoogleOAuth.csproj" />
   </ItemGroup>
 
 </Project>

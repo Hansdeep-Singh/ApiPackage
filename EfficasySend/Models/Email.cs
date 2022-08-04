@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EfficacySend.BluePrint
+namespace EfficacySend.Models
 
 {
    public class Email
@@ -21,6 +21,6 @@ namespace EfficacySend.BluePrint
     {
         public bool IsHtmlValid { get; set; }
         public bool IsEmailSent { get; set; }
-        public string Message { get; set; }
+        public string Message { get; set; } 
     }
 }

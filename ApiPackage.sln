@@ -5,11 +5,15 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Broadcast", "Broadcast", "{54E2F264-73D2-4A6D-9107-8E04E5B84054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfficacySend", "EfficasySend\EfficacySend.csproj", "{9CAD6175-783F-4E52-8EAE-1A8935A1184A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfficacySend", "EfficasySend\EfficacySend.csproj", "{9CAD6175-783F-4E52-8EAE-1A8935A1184A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{16250527-4564-4F45-B75E-6559721C2732}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleOAuth", "GoogleOAuth\GoogleOAuth.csproj", "{C43E42C3-FDAC-4B92-8721-03D188C9332E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleOAuth", "GoogleOAuth\GoogleOAuth.csproj", "{C43E42C3-FDAC-4B92-8721-03D188C9332E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiPackage", "ApiPackage", "{0BA87689-3A23-4C76-9C49-A991E3BBB1C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiPack", "ApiPack\ApiPack.csproj", "{5B198B47-8E9D-43FD-A47E-3FEA0077DF15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +29,10 @@ Global
 		{C43E42C3-FDAC-4B92-8721-03D188C9332E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C43E42C3-FDAC-4B92-8721-03D188C9332E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C43E42C3-FDAC-4B92-8721-03D188C9332E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B198B47-8E9D-43FD-A47E-3FEA0077DF15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B198B47-8E9D-43FD-A47E-3FEA0077DF15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B198B47-8E9D-43FD-A47E-3FEA0077DF15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B198B47-8E9D-43FD-A47E-3FEA0077DF15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9CAD6175-783F-4E52-8EAE-1A8935A1184A} = {54E2F264-73D2-4A6D-9107-8E04E5B84054}
 		{C43E42C3-FDAC-4B92-8721-03D188C9332E} = {16250527-4564-4F45-B75E-6559721C2732}
+		{5B198B47-8E9D-43FD-A47E-3FEA0077DF15} = {0BA87689-3A23-4C76-9C49-A991E3BBB1C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9098343-F6BF-446F-9012-3C92FAAE63B6}

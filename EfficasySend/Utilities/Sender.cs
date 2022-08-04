@@ -2,7 +2,7 @@
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading.Tasks;
-using EfficacySend.BluePrint;
+using EfficacySend.Models;
 
 
 namespace EfficacySend.Utilities
