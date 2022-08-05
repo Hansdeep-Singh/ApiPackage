@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RepositoryUrl>https://github.com/Hansdeep-Singh/ApiPackage</RepositoryUrl>
-    <Version>1.0.11</Version>
+    <Version>1.0.12</Version>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -12,6 +12,7 @@
     <ProjectReference Include="..\EfficasySend\EfficacySend.csproj" />
     <ProjectReference Include="..\GoogleOAuth\GoogleOAuth.csproj" />
     <ProjectReference Include="..\HttpCall\HttpCall.csproj" />
+    <ProjectReference Include="..\Logic\Logic.csproj" />
   </ItemGroup>
 
 </Project>
