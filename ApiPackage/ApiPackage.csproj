@@ -3,14 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RepositoryUrl>https://github.com/Hansdeep-Singh/ApiPackage</RepositoryUrl>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EfficasySend\EfficacySend.csproj" />
-    <ProjectReference Include="..\GoogleOAuth\GoogleOAuth.csproj" />
+    <ProjectReference Include="..\ApiWeb\ApiWeb.csproj" />
   </ItemGroup>
 
 </Project>

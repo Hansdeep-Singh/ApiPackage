@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RepositoryUrl>https://github.com/Hansdeep-Singh/ApiPackage</RepositoryUrl>
-    <Version>1.0.3</Version>
+    <Version>1.0.1</Version>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
