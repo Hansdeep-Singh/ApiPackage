@@ -1,18 +1,18 @@
 ﻿
-using Api.Database;
+using ApiWeb.Database;
 
-using Api.Repositories.TheRepository;
-using Api.Repositories.TokenRepository;
-using Api.Respositories.UserRepository;
-using Api.Service.oAuthService;
-using Api.Service.TokenService;
+using ApiWeb.Repositories.TheRepository;
+using ApiWeb.Repositories.TokenRepository;
+using ApiWeb.Respositories.UserRepository;
+using ApiWeb.Service.oAuthService;
+using ApiWeb.Service.TokenService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 
-namespace Api.Trigger
+namespace ApiWeb.Trigger
 {
     public static class ServiceExtention
     {

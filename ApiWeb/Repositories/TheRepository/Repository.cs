@@ -1,11 +1,11 @@
-﻿using Api.Database;
+﻿using ApiWeb.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Api.Repositories.TheRepository
+namespace ApiWeb.Repositories.TheRepository
 {
     public class Repository<T> : IRepository<T> where T : class
     {

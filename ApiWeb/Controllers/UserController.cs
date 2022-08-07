@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Api.Models;
-using Api.Extentions;
-using Api.Service.TokenService;
+using ApiWeb.Models;
+using ApiWeb.Extentions;
+using ApiWeb.Service.TokenService;
 using Newtonsoft.Json;
-using Api.Respositories.UserRepository;
-using Api.Repositories.TokenRepository;
-using Api.Service.oAuthService;
+using ApiWeb.Respositories.UserRepository;
+using ApiWeb.Repositories.TokenRepository;
+using ApiWeb.Service.oAuthService;
 using System.IdentityModel.Tokens.Jwt;
 using GoogleOAuth;
 
@@ -14,7 +14,7 @@ using GoogleOAuth;
 
 //https://www.youtube.com/watch?v=7tgLuJ__ZKU
 //https://www.youtube.com/watch?v=rPDvBrlTt2Q&ab_channel=AristotelisPitaridis - Custom Authorise Attribute
-namespace Api.Controllers
+namespace ApiWeb.Controllers
 {
     [ApiController]
     [Produces("application/json")]

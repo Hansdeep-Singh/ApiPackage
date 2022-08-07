@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Primitives;
-using Api.Models;
+using ApiWeb.Models;
 using System.Security.Cryptography;
 
-namespace Api.Service.TokenService
+namespace ApiWeb.Service.TokenService
 {
     //https://piotrgankiewicz.com/2017/12/07/jwt-refresh-tokens-and-net-core/
     public class Token : IToken

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Api.Repositories.TheRepository
+namespace ApiWeb.Repositories.TheRepository
 {
     public interface IRepository<T>
     {

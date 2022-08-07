@@ -1,4 +1,4 @@
-﻿using Api.Models;
+﻿using ApiWeb.Models;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace Api.Service.TokenService
+namespace ApiWeb.Service.TokenService
 {
     public class RefreshToken
     {

@@ -1,4 +1,4 @@
-﻿namespace Api.Models
+﻿namespace ApiWeb.Models
 {
     public class GoogleToken
     {

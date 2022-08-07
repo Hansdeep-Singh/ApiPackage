@@ -1,11 +1,11 @@
-﻿using Api.Models;
+﻿using ApiWeb.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Api.Database
+namespace ApiWeb.Database
 {
     public class TheContext : DbContext
     {

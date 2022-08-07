@@ -1,4 +1,4 @@
-﻿using Api.Models;
+﻿using ApiWeb.Models;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Net.Http.Headers;
@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Api.Service.oAuthService
+namespace ApiWeb.Service.oAuthService
 {
     public class GoogleApi
     {

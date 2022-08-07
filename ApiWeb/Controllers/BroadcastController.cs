@@ -1,10 +1,10 @@
-﻿using Api.Models;
+﻿using ApiWeb.Models;
 using EfficacySend.Models;
 using EfficacySend.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Api.Controllers
+namespace ApiWeb.Controllers
 {
     [ApiController]
     [Produces("application/json")]

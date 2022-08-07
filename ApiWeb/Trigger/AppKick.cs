@@ -1,6 +1,6 @@
 ﻿
 
-namespace Api.Trigger
+namespace ApiWeb.Trigger
 {
     public class AppKick
     {

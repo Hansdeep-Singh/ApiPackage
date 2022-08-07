@@ -1,14 +1,14 @@
-﻿using Api.Database;
-using Api.Models;
-using Api.Repositories.TheRepository;
-using Api.Respositories.UserRepository;
+﻿using ApiWeb.Database;
+using ApiWeb.Models;
+using ApiWeb.Repositories.TheRepository;
+using ApiWeb.Respositories.UserRepository;
 using Logic;
 using Microsoft.EntityFrameworkCore;
 
 
 //using bl = BusinessLayer;
 
-namespace Api.Respositories.UserRepository
+namespace ApiWeb.Respositories.UserRepository
 {
     public class UserService : Repository<User>, IUserService
     {

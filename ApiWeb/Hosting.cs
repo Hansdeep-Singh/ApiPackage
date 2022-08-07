@@ -1,5 +1,5 @@
-﻿using Api.Models;
-using Api.Trigger;
+﻿using ApiWeb.Models;
+using ApiWeb.Trigger;
 
 namespace ApiWeb
 {

@@ -1,9 +1,9 @@
-﻿using Api.Database;
-using Api.Models;
-using Api.Repositories.TheRepository;
+﻿using ApiWeb.Database;
+using ApiWeb.Models;
+using ApiWeb.Repositories.TheRepository;
 using System.Collections;
 
-namespace Api.Repositories.TokenRepository
+namespace ApiWeb.Repositories.TokenRepository
 {
     public class TokenService : Repository<TheToken>, ITokenService
     {

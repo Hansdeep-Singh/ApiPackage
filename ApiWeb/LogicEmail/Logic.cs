@@ -1,5 +1,5 @@
 ﻿using BC = BCrypt.Net.BCrypt;
-namespace Api.LogicEmail
+namespace ApiWeb.LogicEmail
 
 {
     public class Logic 

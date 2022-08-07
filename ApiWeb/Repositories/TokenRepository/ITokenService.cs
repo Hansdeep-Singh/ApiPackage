@@ -1,6 +1,6 @@
-﻿using Api.Models;
+﻿using ApiWeb.Models;
 
-namespace Api.Repositories.TokenRepository
+namespace ApiWeb.Repositories.TokenRepository
 {
     public interface ITokenService
     {

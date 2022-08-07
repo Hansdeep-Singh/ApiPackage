@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Api.Extentions
+namespace ApiWeb.Extentions
 {
     public static class StringHelper
     {
