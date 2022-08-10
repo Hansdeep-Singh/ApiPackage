@@ -1,11 +1,17 @@
 ﻿using ApiWeb.Models;
 using ApiWeb.Trigger;
 
-namespace ApiWeb
+namespace ApiWeb.Hosting
 {
-    public static class Hosting
+    public sealed class ApiHost
     {
-        public static void RunWebServer(this string[] args)
+        private readonly string[] args;
+
+        public ApiHost(string[] args)
+        {
+            this.args = args;
+        }
+        public void BuildHost()
         {
             var builder = WebApplication.CreateBuilder(args);
             var services = builder.Services;
@@ -23,8 +29,12 @@ namespace ApiWeb
             services.HttpCalls();
             services.Authentication("This_is_mySecret_key_whats_yourswouldyouliektobefriendsweithme");
             services.Cors(origins);
-
-
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".AdventureWorks.Session";
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.IsEssential = true;
+            });
 
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
@@ -35,6 +45,7 @@ namespace ApiWeb
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
             // app.UseMiddleware<TokenManager>();
             app.UseEndpoints(endpoints =>
             {

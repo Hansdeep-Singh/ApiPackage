@@ -5,7 +5,7 @@
     <RepositoryUrl>https://github.com/Hansdeep-Singh/ApiPackage</RepositoryUrl>
     <Version>1.0.1</Version>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <!--<Nullable>enable</Nullable>-->
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SendGrid" Version="9.24.4" />
