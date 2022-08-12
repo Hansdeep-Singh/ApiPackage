@@ -17,7 +17,7 @@ namespace ApiWeb.Repositories.TheRepository
         List<T> GetAll();
         Task<List<T>> GetAllAsync();
         Task<T> GetOneGuidIdAsync(Guid id);
-        Task<T> GetOneIntIdAsync(int? id);
+        Task<T> GetOneIntIdAsync(int id);
         Task<T> GetOneStringIdAsync(string id);
         Task SaveAsync();
     }

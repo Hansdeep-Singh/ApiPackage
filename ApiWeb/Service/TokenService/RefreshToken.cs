@@ -29,14 +29,6 @@ namespace ApiWeb.Service.TokenService
 
         }
 
-        //Options Snap Shot
-        //public string GenerateRefreshToken(string UserName, Guid UserId, string Roles)
-        //{
-        //    return itoken.GenerateToken(UserName, jwtRefreshOptions.JwtRefreshConfig.SecretKey, UserId.ToString(), Roles,
-        //        jwtRefreshOptions.JwtRefreshConfig.Audience, jwtRefreshOptions.JwtRefreshConfig.Issuer, jwtRefreshOptions.JwtRefreshConfig.ExpiryMinutes
-        //  );
-        //}
-
         public string GenerateSimpleRefreshToken() => Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
 
 

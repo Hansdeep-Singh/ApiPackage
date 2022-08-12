@@ -14,8 +14,8 @@ namespace ApiWeb.Database
            : base(options)
         {
         }
-        public DbSet<User> Users { get; set; }
-        public DbSet<TheToken> TheTokens { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<TheToken> TheTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
 

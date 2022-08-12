@@ -10,7 +10,7 @@ namespace ApiWeb.Repositories.TheRepository
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly TheContext Context;
-        protected DbSet<T> DbSet { get; set; }
+        public DbSet<T> DbSet { get; set; }
         public Repository(TheContext Context)
         {
             this.Context = Context;
@@ -19,7 +19,7 @@ namespace ApiWeb.Repositories.TheRepository
         private bool disposed = false;
         public List<T> GetAll() => DbSet.ToList();
         public async Task<List<T>> GetAllAsync() => await DbSet.ToListAsync();
-        public async Task<T> GetOneIntIdAsync(int? id) => await DbSet.FindAsync(id);
+        public async Task<T> GetOneIntIdAsync(int id) => await DbSet.FindAsync(id);
         public async Task<T> GetOneStringIdAsync(string id) => await DbSet.FindAsync(id);
         public async Task<T> GetOneGuidIdAsync(Guid id) => await DbSet.FindAsync(id);
         public async Task AddAsync(T entity) { await DbSet.AddAsync(entity); }

@@ -1,4 +1,5 @@
-﻿using ApiWeb.Models;
+﻿using ApiWeb.Constants;
+using ApiWeb.Models;
 using ApiWeb.Trigger;
 
 namespace ApiWeb.Hosting
@@ -6,7 +7,6 @@ namespace ApiWeb.Hosting
     public sealed class ApiHost
     {
         private readonly string[] args;
-
         public ApiHost(string[] args)
         {
             this.args = args;
@@ -17,21 +17,18 @@ namespace ApiWeb.Hosting
             var services = builder.Services;
             services.AddControllers();
             services.AddDistributedMemoryCache();
-            //Gets configuration from appsettings.json files (Connects)
-            services.Configure<JwtOptions>(
-                builder.Configuration.GetSection("jwt"));
+            services.Configure<JwtOptions>(builder.Configuration.GetSection("jwt"));
 
-            var settings = builder.Configuration.GetSection("jwt").Get<JwtOptions>();
+            var secret = builder.Configuration.GetSection("jwt:jwtAccess").Get<TokenConfig>();
             var config = builder.Configuration.GetSection("ConnectionStrings:ConnectionString");
-            string[] origins = { "http://localhost:4200", "http://www.hansdeep.com", "http://hansdeep.com" };
             services.Database(config.Value);
             services.Services();
             services.HttpCalls();
-            services.Authentication("This_is_mySecret_key_whats_yourswouldyouliektobefriendsweithme");
-            services.Cors(origins);
+            services.Authentication(secret.SecretKey);
+            services.Cors(AppConsts.CORSOrigins);
             services.AddSession(options =>
             {
-                options.Cookie.Name = ".AdventureWorks.Session";
+                options.Cookie.Name = "ApiSession";
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
                 options.Cookie.IsEssential = true;
             });
@@ -46,7 +43,10 @@ namespace ApiWeb.Hosting
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
-            // app.UseMiddleware<TokenManager>();
+        // app.UseMiddleware<TokenManager>();
+
+        //https://www.youtube.com/watch?v=VuFQtyRmS0E&t=337s&ab_channel=NickChapsas End points
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

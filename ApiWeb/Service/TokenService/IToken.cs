@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ApiWeb.Service.TokenService
 {
-    public interface IToken
+    public interface IToken 
     {
         string GenerateToken(string UserName, string Key, string UserId,
             string Audience, string Issuer, string Roles,

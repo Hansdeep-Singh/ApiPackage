@@ -53,7 +53,7 @@ namespace ApiWeb.Controllers
         {
             try
             {
-                if ((await userService.IsUserExists(u.EmailAddress)))
+                if (await userService.IsUserExists(u.EmailAddress))
                 {
                     return Ok(new ApiResponse
                     {
@@ -107,7 +107,18 @@ namespace ApiWeb.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var notify = new ApiResponse
+                {
+                    Payload = null,
+                    Success = true,
+                    Notify = new Notify
+                    {
+                        Success = false,
+                        Message = $"**Something bad happened, Exception{ex.Message}**"
+                    }
+
+                };
+                return Ok(notify);
             }
         }
 
@@ -172,7 +183,7 @@ namespace ApiWeb.Controllers
                     return Ok(apiResponse);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 var apiResponse = new ApiResponse
                 {
@@ -181,7 +192,7 @@ namespace ApiWeb.Controllers
                     Notify = new Notify
                     {
                         Success = false,
-                        Message = $"Exception occured {e.Message}"
+                        Message = $"**Something bad happened, Exception{ex.Message}**"
                     }
 
                 };
