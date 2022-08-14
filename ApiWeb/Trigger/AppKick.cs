@@ -1,5 +1,7 @@
 ﻿
 
+using ApiWeb.MiddleWare;
+
 namespace ApiWeb.Trigger
 {
     public class AppKick

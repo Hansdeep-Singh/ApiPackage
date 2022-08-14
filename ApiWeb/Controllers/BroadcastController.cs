@@ -28,7 +28,6 @@ namespace ApiWeb.Controllers
             SendEmailResponse emailResponse = new();
             emailResponse = await sender.SendEmailAll(sendEmail);
             
-
             var apiResponse = new ApiResponse
             {
                 Success = emailResponse.IsEmailSent,
@@ -38,7 +37,6 @@ namespace ApiWeb.Controllers
                     Success = true,
                     Message = "**Congratulations**, the email has been sent"
                 }
-
             };
             return Ok(apiResponse);
         }

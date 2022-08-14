@@ -16,22 +16,16 @@ using System.Security.Cryptography;
 
 namespace ApiWeb.Service.TokenService
 {
-    //https://piotrgankiewicz.com/2017/12/07/jwt-refresh-tokens-and-net-core/
-    public class Token : IToken
+    public class Token : TokenBase
     {
-
-        private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly IDistributedCache distributedCache;
-        private readonly JwtOptions jwtAccessOptions;
-        public Token(IOptionsSnapshot<JwtOptions> namedOptionAccessor, IHttpContextAccessor httpContextAccessor, IDistributedCache distributedCache, IOptions<JwtOptions> jwtOptions)
+        public Token(IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IDistributedCache distributedCache) : base(httpContextAccessor,configuration,distributedCache)
         {
-            this.httpContextAccessor = httpContextAccessor;
-            this.distributedCache = distributedCache;
-            jwtAccessOptions = namedOptionAccessor.Get(JwtOptions.JwtAccess);
+
         }
-        public string GenerateToken(string UserName, string Key, string UserId, string Roles,
+
+        public override string GenerateToken(string UserName, string Key, string UserId, string Roles,
             string Audience, string Issuer,
-            int ExpiryMinutes, int ExpiryDays )
+            int ExpiryMinutes, int ExpiryDays)
         {
             var tokenKey = Encoding.ASCII.GetBytes(Key);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -54,27 +48,48 @@ namespace ApiWeb.Service.TokenService
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        public string GenerateRefreshToken()
+        public override string GenerateRefreshToken()
         {
-
             var randomNumber = new byte[32];
             using var randomNumberGenerator = RandomNumberGenerator.Create();
             randomNumberGenerator.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
-        public async Task<bool> IsCurrentActiveToken() => await IsActiveAcync(GetCurrentAsync());
-        public async Task DeactivateCurrentAsync() => await DeactivateAsync(GetCurrentAsync());
-        public async Task<bool> IsActiveAcync(string token) => await distributedCache.GetStringAsync(GetKey(token)) == null;
-        public async Task DeactivateAsync(string token) => await distributedCache.SetStringAsync(GetKey(token), " ", new DistributedCacheEntryOptions
+    }
+
+    public abstract class TokenBase : IToken
+    {
+
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IConfiguration configuration;
+        private readonly IDistributedCache distributedCache;
+        public TokenBase(IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IDistributedCache distributedCache)
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(jwtAccessOptions.JwtAccessConfig.ExpiryMinutes)
-        });
-        private static string GetKey(string token) => $"tokens:{token}:deactivated";
+            this.httpContextAccessor = httpContextAccessor;
+            this.distributedCache = distributedCache;
+            this.configuration = configuration;
+
+        }
+
+        public abstract string GenerateToken(string UserName, string Key, string UserId, string Roles,
+           string Audience, string Issuer,
+           int ExpiryMinutes, int ExpiryDays);
+
+        public abstract string GenerateRefreshToken();
+
+        public async Task<bool> IsCurrentActiveToken() => await IsActiveAcync(GetCurrentAsync());
+        public  async Task DeactivateCurrentAsync() => await DeactivateAsync(GetCurrentAsync());
+        public  async Task<bool> IsActiveAcync(string token) => await distributedCache.GetStringAsync(GetKey(token)) == null;
+
         private string GetCurrentAsync()
         {
             var authorizationHeader = httpContextAccessor.HttpContext.Request.Headers["authorization"];
             return authorizationHeader == StringValues.Empty ? string.Empty : authorizationHeader.Single().Split(" ").Last();
         }
-
+        public  async Task DeactivateAsync(string token) => await distributedCache.SetStringAsync(GetKey(token), " ", new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(configuration.GetSection("jwt:jwtAccess").Get<TokenConfig>().ExpiryMinutes)
+        });
+        protected static string GetKey(string token) => $"tokens:{token}:deactivated";
     }
 }

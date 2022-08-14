@@ -29,7 +29,7 @@ namespace ApiWeb.Respositories.UserRepository
                 EmailAddress = u.EmailAddress,
                 Roles = u.Roles,
             };
-           await context.AddAsync(user);
+            await context.AddAsync(user);
             await context.SaveChangesAsync();
 
             return true;

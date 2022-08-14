@@ -1,4 +1,5 @@
 ﻿using ApiWeb.Constants;
+using ApiWeb.MiddleWare;
 using ApiWeb.Models;
 using ApiWeb.Trigger;
 
@@ -42,10 +43,10 @@ namespace ApiWeb.Hosting
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<TokenManager>();
             app.UseSession();
-        // app.UseMiddleware<TokenManager>();
 
-        //https://www.youtube.com/watch?v=VuFQtyRmS0E&t=337s&ab_channel=NickChapsas End points
+            //https://www.youtube.com/watch?v=VuFQtyRmS0E&t=337s&ab_channel=NickChapsas End points
 
             app.UseEndpoints(endpoints =>
             {

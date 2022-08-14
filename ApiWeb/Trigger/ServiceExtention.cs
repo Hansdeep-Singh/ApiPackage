@@ -1,6 +1,6 @@
 ﻿
 using ApiWeb.Database;
-
+using ApiWeb.MiddleWare;
 using ApiWeb.Repositories.TheRepository;
 using ApiWeb.Repositories.TokenRepository;
 using ApiWeb.Respositories.UserRepository;
@@ -18,11 +18,13 @@ namespace ApiWeb.Trigger
     {
         public static IServiceCollection Services (this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IToken, Token>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<TokenManager>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<AccessToken>();
             services.AddScoped<RefreshToken>();
             services.AddScoped<GoogleApi>();

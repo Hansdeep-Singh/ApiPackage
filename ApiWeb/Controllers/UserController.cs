@@ -240,46 +240,7 @@ namespace ApiWeb.Controllers
         }
 
 
-        [HttpPost("LogOut")]
-        [AllowAnonymous]
-        public async Task<IActionResult> LogOut(string accesstoken)
-        {
-            try
-            {
-                // For middle ware.
-                // await token.DeactivateCurrentAsync();
-
-                return Ok(new ApiResponse
-                {
-                    Payload = null,
-                    Success = true,
-                    Notify = new Notify
-                    {
-                        Success = true,
-                        Message = "**Congratulations you have sucessfully logged out**"
-                    }
-                });
-            }
-            catch (Exception e)
-            {
-                var apiResponse = new ApiResponse
-                {
-                    Payload = null,
-                    Success = false,
-                    Notify = new Notify
-                    {
-                        Success = false,
-                        Message = $"Exception occured {e.Message}"
-                    }
-
-                };
-                return Ok(apiResponse);
-            }
-            finally
-            {
-                Redirect("https://www.google.com/accounts/Logout");
-            }
-        }
+     
 
         [HttpGet("GetGoogleOAuthUri")]
         [AllowAnonymous]
@@ -367,6 +328,44 @@ namespace ApiWeb.Controllers
             //string result = Extentions.StringHelper.ChangeFirstLetterCase(strName);
             Console.WriteLine(result);
             return Ok(result);
+        }
+
+        [HttpPost("LogOut")]
+        public async Task<IActionResult> LogOut()
+        {
+            try
+            {
+                await token.DeactivateCurrentAsync();
+                return Ok(new ApiResponse
+                {
+                    Payload = null,
+                    Success = true,
+                    Notify = new Notify
+                    {
+                        Success = true,
+                        Message = "**Congratulations you have sucessfully logged out. (>> Token Cancelled <<)**"
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                var apiResponse = new ApiResponse
+                {
+                    Payload = null,
+                    Success = false,
+                    Notify = new Notify
+                    {
+                        Success = false,
+                        Message = $"Exception occured {e.Message}"
+                    }
+
+                };
+                return Ok(apiResponse);
+            }
+            finally
+            {
+                Redirect("https://www.google.com/accounts/Logout");
+            }
         }
     }
 }
