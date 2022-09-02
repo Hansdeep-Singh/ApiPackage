@@ -10,7 +10,6 @@ namespace ApiWeb.MiddleWare
         {
             this.token = token;
         }
-
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             if(await token.IsCurrentActiveToken())
@@ -18,7 +17,6 @@ namespace ApiWeb.MiddleWare
                 await next(context);
                 return;
             }
-
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
     }

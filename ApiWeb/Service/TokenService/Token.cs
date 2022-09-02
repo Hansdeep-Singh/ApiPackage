@@ -13,34 +13,34 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Primitives;
 using ApiWeb.Models;
 using System.Security.Cryptography;
+using Logic.Efficacy;
 
 namespace ApiWeb.Service.TokenService
 {
     public class Token : TokenBase
     {
+        private readonly IConfiguration configuration;
         public Token(IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IDistributedCache distributedCache) : base(httpContextAccessor,configuration,distributedCache)
         {
-
+            this.configuration = configuration;
         }
 
-        public override string GenerateToken(string UserName, string Key, string UserId, string Roles,
-            string Audience, string Issuer,
-            int ExpiryMinutes, int ExpiryDays)
+        public override string GenerateToken(Guid UserId, string Role, string Type)
         {
-            var tokenKey = Encoding.ASCII.GetBytes(Key);
+            var settings = configuration.GetSection($"jwt:{Type}").Get<TokenConfig>();
+            var tokenKey = Encoding.ASCII.GetBytes(settings.SecretKey);
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity
                 (new Claim[] {
-                    new Claim(ClaimTypes.Name, UserName),
                     new Claim(ClaimTypes.NameIdentifier, UserId.ToString()),
-                    new Claim(ClaimTypes.Role, Roles)
+                    new Claim(ClaimTypes.Role, Role)
                 }),
-                Audience = Audience,
-                Issuer = Issuer,
+                Audience = settings.Audience,
+                Issuer = settings.Issuer,
                 //Expires = DateTime.Now.AddMinutes(ExpiryMinutes),
-                Expires = DateTime.Now.AddDays(ExpiryDays),
+                Expires = DateTime.Now.AddDays(settings.ExpiryDays),
                 SigningCredentials = new SigningCredentials(
                   new SymmetricSecurityKey(tokenKey),
                 SecurityAlgorithms.HmacSha256Signature)
@@ -48,13 +48,15 @@ namespace ApiWeb.Service.TokenService
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        public override string GenerateRefreshToken()
+        public override string GenerateRefreshToken(int length)
         {
-            var randomNumber = new byte[32];
+            var randomNumber = new byte[length];
             using var randomNumberGenerator = RandomNumberGenerator.Create();
             randomNumberGenerator.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
+
+       // public string GenerateRefreshToken() => Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
     }
 
     public abstract class TokenBase : IToken
@@ -71,11 +73,18 @@ namespace ApiWeb.Service.TokenService
 
         }
 
-        public abstract string GenerateToken(string UserName, string Key, string UserId, string Roles,
-           string Audience, string Issuer,
-           int ExpiryMinutes, int ExpiryDays);
+        public abstract string GenerateToken(Guid UserId, string Role, string Type);
 
-        public abstract string GenerateRefreshToken();
+        public abstract string GenerateRefreshToken(int length);
+
+        public bool IsTokenExpired(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var decodedValue = handler.ReadJwtToken(token);
+            var timestamp = decodedValue?.Payload?.Exp;
+            DateTime date = Misc.ConvertFromUnixTimeStamp(timestamp);
+            return (date>DateTimeOffset.UtcNow);
+        }
 
         public async Task<bool> IsCurrentActiveToken() => await IsActiveAcync(GetCurrentAsync());
         public  async Task DeactivateCurrentAsync() => await DeactivateAsync(GetCurrentAsync());

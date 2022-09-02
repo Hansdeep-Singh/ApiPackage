@@ -25,8 +25,6 @@ namespace ApiWeb.Trigger
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<TokenManager>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<AccessToken>();
-            services.AddScoped<RefreshToken>();
             services.AddScoped<GoogleApi>();
             return services;
         }

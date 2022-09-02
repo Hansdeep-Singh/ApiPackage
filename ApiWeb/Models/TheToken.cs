@@ -11,10 +11,9 @@ namespace ApiWeb.Models
     {
         public Guid TheTokenId { get; set; } = Guid.NewGuid();
         [ForeignKey("User")]
-        public Guid UserId { get; set;} = Guid.NewGuid();
-        public string RefreshToken { get; set;}
-        public DateTime IssueDate { get; set; } = DateTime.Now;
-        public DateTime ExpireDate { get; set; } = DateTime.Now.AddDays(1);
+        public Guid UserId { get; set;}
+        public string Token { get; set;}
+        public string Type { get; set; }
         public virtual User User { get; set;}
     }
 }

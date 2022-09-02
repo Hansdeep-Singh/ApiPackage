@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace ApiWeb.Extentions
+namespace Logic.Extentions
 {
     public static class StringHelper
     {
@@ -19,6 +20,7 @@ namespace ApiWeb.Extentions
             }
             return inputString;
         }
+
 
         public static Uri AddQuery(this Uri uri, string name, string value)
         {

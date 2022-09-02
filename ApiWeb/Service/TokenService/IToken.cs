@@ -7,12 +7,11 @@ namespace ApiWeb.Service.TokenService
 {
     public interface IToken 
     {
-        string GenerateToken(string UserName, string Key, string UserId,
-            string Audience, string Issuer, string Roles,
-            int ExpiryMinutes, int ExpiryDays);
-        string GenerateRefreshToken();
+        string GenerateToken(Guid UserId, string Role, string Type);
+        string GenerateRefreshToken(int length);
         Task<bool> IsCurrentActiveToken();
         Task DeactivateCurrentAsync();
+        bool IsTokenExpired(string token);
         Task<bool> IsActiveAcync(string token);
         Task DeactivateAsync(string token);
     }

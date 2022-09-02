@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using ApiWeb.Models;
-using ApiWeb.Extentions;
 using ApiWeb.Service.TokenService;
 using Newtonsoft.Json;
 using ApiWeb.Respositories.UserRepository;
@@ -9,6 +8,10 @@ using ApiWeb.Repositories.TokenRepository;
 using ApiWeb.Service.oAuthService;
 using System.IdentityModel.Tokens.Jwt;
 using GoogleOAuth;
+using Logic.Extentions;
+using EfficacySend.Utilities;
+using EfficacySend.Models;
+using static ApiWeb.Constants.AppConsts;
 
 
 
@@ -27,20 +30,14 @@ namespace ApiWeb.Controllers
         private readonly IToken token;
         private readonly IUserService userService;
         private readonly ITokenService tokenService;
-        private readonly AccessToken accessToken;
-        private readonly RefreshToken refreshToken;
         private readonly GoogleApi googleApi;
         private readonly IConfiguration configuration;
 
 
-
-        //https://cmatskas.com/-net-password-hashing-using-pbkdf2/
-        public UserController(IToken token, IUserService userService, ITokenService tokenService, AccessToken accessToken, RefreshToken refreshToken, GoogleApi googleApi, IConfiguration configuration)
+        public UserController(IToken token, IUserService userService, ITokenService tokenService, GoogleApi googleApi, IConfiguration configuration)
         {
             this.token = token;
             this.userService = userService;
-            this.accessToken = accessToken;
-            this.refreshToken = refreshToken;
             this.tokenService = tokenService;
             this.googleApi = googleApi;
             this.configuration = configuration;
@@ -67,17 +64,17 @@ namespace ApiWeb.Controllers
                     });
                 }
                 u.Roles = "User";
-                string RefreshToken = refreshToken.GenerateSimpleRefreshToken();
+              
                 await userService.Register(u);
 
                 var user = await userService.Authenticate(u);
-                await tokenService.SaveRefreshToken(user.UserId, RefreshToken);
+                string Token = token.GenerateToken(user.UserId, user.Roles, TokenType.Refresh.ToString());
+                await tokenService.SaveToken(user.UserId, Token, TokenType.Refresh.ToString());
 
                 var tokens = new Tokens
                 {
-                    AccessToken = accessToken.GenerateAccessToken(user.EmailAddress, user.UserId, user.Roles),
-                    RefreshToken = refreshToken.GenerateRefreshToken(user.EmailAddress, user.UserId, user.Roles),
-                    SimpleRefreshToken = RefreshToken,
+                    AccessToken = token.GenerateToken(user.UserId, user.Roles, TokenType.Access.ToString()),
+                    RefreshToken = Token,
                 };
 
                 var userResp = new User
@@ -132,8 +129,8 @@ namespace ApiWeb.Controllers
                 var user = await userService.Authenticate(u);
                 if (user != null)
                 {
-                    string RefreshToken = refreshToken.GenerateSimpleRefreshToken();
-                    await tokenService.SaveRefreshToken(user.UserId, RefreshToken);
+                    string RefreshToken = token.GenerateToken(user.UserId, user.Roles, TokenType.Refresh.ToString());
+                    await tokenService.SaveToken(user.UserId, RefreshToken, TokenType.Refresh.ToString());
 
                     var User = new User
                     {
@@ -144,9 +141,8 @@ namespace ApiWeb.Controllers
 
                     var Tokens = new Tokens
                     {
-                        AccessToken = accessToken.GenerateAccessToken(user.EmailAddress, user.UserId, user.Roles),
-                        RefreshToken = refreshToken.GenerateRefreshToken(user.EmailAddress, user.UserId, user.Roles),
-                        SimpleRefreshToken = RefreshToken,
+                        AccessToken = token.GenerateToken(user.UserId, user.Roles, TokenType.Access.ToString()),
+                        RefreshToken = RefreshToken,
                     };
 
                     var Payload = new LoginResponse
@@ -204,27 +200,34 @@ namespace ApiWeb.Controllers
         [AllowAnonymous]
         public async Task<LoginResponse> AccessToken(LoginResponse loginResponse)
         {
-            string newToken = refreshToken.GenerateSimpleRefreshToken();
-            var IsTokenValid = await tokenService.IsTokenValid(loginResponse.Tokens.SimpleRefreshToken);
-          
-            if (IsTokenValid)
+            string Token = token.GenerateToken(loginResponse.User.UserId, loginResponse.User.Roles, TokenType.Refresh.ToString());
+            try
             {
-                var IsTokenExpired = await tokenService.IsTokenExpired(loginResponse.Tokens.SimpleRefreshToken);
-                if (IsTokenExpired)
+                var IsTokenValid = await tokenService.IsTokenValid(loginResponse.Tokens.RefreshToken);
+
+                if (IsTokenValid)
                 {
-                    await tokenService.SaveRefreshToken(loginResponse.User.UserId, newToken);
+                    var IsTokenExpired = token.IsTokenExpired(loginResponse.Tokens.RefreshToken);
+                    if (IsTokenExpired)
+                    {
+                        await tokenService.SaveToken(loginResponse.User.UserId, Token, TokenType.Refresh.ToString());
+                    }
+                    var Tokens = new Tokens
+                    {
+                        IsRefreshTokenExpired = IsTokenExpired,
+                        AccessToken = token.GenerateToken(loginResponse.User.UserId, loginResponse.User.Roles, TokenType.Access.ToString()),
+                        RefreshToken = Token,
+                    };
+                    var response = new LoginResponse
+                    {
+                        Tokens = Tokens,
+                    };
+                    return response;
                 }
-                var tokens = new Tokens
-                {
-                    IsRefreshTokenExpired = IsTokenExpired,
-                    AccessToken = accessToken.GenerateAccessToken(loginResponse.User.EmailAddress, loginResponse.User.UserId, loginResponse.User.Roles),
-                    SimpleRefreshToken = newToken
-                };
-                var response = new LoginResponse
-                {
-                    Tokens = tokens,
-                };
-                return response;
+            }
+            catch (Exception ex)
+            {
+
             }
             return new LoginResponse
             {
@@ -239,8 +242,45 @@ namespace ApiWeb.Controllers
             return Ok(true);
         }
 
+        [HttpPost("Forgot")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Forgot(User u)
+        {
+            var GoogleOAuthConfig = configuration.GetSection("GoogleOAuth").Get<GoogleOAuthConfig>();
+            try
+            {
+                if (await userService.IsUserExists(u.EmailAddress))
+                {
+                    var payloadString =  userService.GetResetPasswordUrl(134);
 
-     
+                    var sendEmail = new Email
+                    {
+                        FromEmail = "hans.profession@gmail.com",
+                        FromName = "Hans",
+                        ToEmail = u.EmailAddress,
+                        Subject = "Subject",
+                        PlainEmail = "Hi",
+                        HtmlEmail = $"<p>{$"{GoogleOAuthConfig.WebAppUri}/resetpassword?payload={payloadString}"}</p>"
+                    };
+                    ISender sender = new Sender("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");
+                    await sender.SendEmailAll(sendEmail);
+                }
+            }
+            catch(Exception ex) { }
+
+            return Ok(new ApiResponse
+            {
+                Payload = null,
+                Notify = new Notify
+                {
+                    Message = "If your email address is registered with us, we will send a link in your email to reset password",
+                    Success = true
+                },
+                Success = true
+            });
+        }
+
+
 
         [HttpGet("GetGoogleOAuthUri")]
         [AllowAnonymous]
@@ -264,7 +304,7 @@ namespace ApiWeb.Controllers
 
             string query = UriService.GetAccessUri(GoogleOAuthConfig.ClientId, code, GoogleOAuthConfig.Secret, GoogleOAuthConfig.RedirectUri);
 
-            string RefreshToken = refreshToken.GenerateSimpleRefreshToken();
+            string RefreshToken = token.GenerateRefreshToken(34);
 
             //await tokenService.SaveRefreshToken(user.UserId, RefreshToken);
 
@@ -272,20 +312,20 @@ namespace ApiWeb.Controllers
 
             var handler = new JwtSecurityTokenHandler();
 
-            var token = handler.ReadJwtToken(result.Id_Token);
+            var googletoken = handler.ReadJwtToken(result.Id_Token);
 
             var tokens = new Tokens
             {
-                AccessToken = accessToken.GenerateAccessToken(token.Claims.ElementAt(7).Value, Guid.NewGuid(), "User"),
-                SimpleRefreshToken = RefreshToken,
+                AccessToken = token.GenerateToken(Guid.NewGuid(), "User", TokenType.Access.ToString()),
+                RefreshToken = token.GenerateToken(Guid.NewGuid(), "User", TokenType.Refresh.ToString()),
             };
 
             var user = new User
             {
-                EmailAddress = token.Claims.ElementAt(4).Value,
-                FirstName = token.Claims.ElementAt(9).Value,
-                LastName = token.Claims.ElementAt(10).Value,
-                PhotoString = token.Claims.ElementAt(8).Value,
+                EmailAddress = googletoken.Claims.ElementAt(4).Value,
+                FirstName = googletoken.Claims.ElementAt(9).Value,
+                LastName = googletoken.Claims.ElementAt(10).Value,
+                PhotoString = googletoken.Claims.ElementAt(8).Value,
             };
 
             var Payload = new LoginResponse
@@ -295,8 +335,6 @@ namespace ApiWeb.Controllers
             };
 
             string payloadString = JsonConvert.SerializeObject(Payload);
-
-
             return Redirect($"{GoogleOAuthConfig.WebAppUri}/login?payload={payloadString}");
         }
 
@@ -326,7 +364,6 @@ namespace ApiWeb.Controllers
             string strName = "authorised Button Result";
             string result = strName.ChangeFirstLetterCase();
             //string result = Extentions.StringHelper.ChangeFirstLetterCase(strName);
-            Console.WriteLine(result);
             return Ok(result);
         }
 

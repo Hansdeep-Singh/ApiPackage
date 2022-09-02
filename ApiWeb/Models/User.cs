@@ -12,7 +12,6 @@ namespace ApiWeb.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Password { get; set; }
-        public bool LookedOut { get; set; }
         public bool RememberMe { get; set; }
         public string Roles { get; set; }
         public string PhotoString { get; set; }
@@ -26,11 +25,9 @@ namespace ApiWeb.Models
     }
     public class Tokens
     {
-
         public string AccessToken { get; set; } = string.Empty;
         public string RefreshToken { get; set; }
         public bool IsRefreshTokenExpired { get; set; } = false;
-        public string SimpleRefreshToken { get; set; }
     }
 }
 

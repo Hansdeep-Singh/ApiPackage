@@ -5,6 +5,6 @@ namespace EfficacySend.Utilities
 {
     public interface ISender
     {
-        Task<SendEmailResponse> SendEmailAll(Email se);
+        Task<bool> SendEmailAll(Email se);
     }
 }

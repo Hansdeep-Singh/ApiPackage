@@ -4,11 +4,10 @@ namespace ApiWeb.Repositories.TokenRepository
 {
     public interface ITokenService
     {
-        Task<bool> SaveRefreshToken(Guid userId, string refreshToken);
+        Task<bool> SaveToken(Guid userId, string Token, string Type);
         Task<TheToken> OneRefreshToken(Guid userId);
         Task<List<TheToken>> AllRefreshTokens(Guid userId);
         Task<TheToken> OneRefreshTokenOnUserId(Guid userId);
-        Task<bool> IsTokenExpired(string token);
         Task<bool> IsTokenValid(string token);
     }
 }

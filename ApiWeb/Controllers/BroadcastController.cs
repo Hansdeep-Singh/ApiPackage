@@ -25,12 +25,10 @@ namespace ApiWeb.Controllers
                 HtmlEmail = $"<p>{em.Message}</p>"
             };
             ISender sender = new Sender("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");
-            SendEmailResponse emailResponse = new();
-            emailResponse = await sender.SendEmailAll(sendEmail);
             
             var apiResponse = new ApiResponse
             {
-                Success = emailResponse.IsEmailSent,
+                Success = await sender.SendEmailAll(sendEmail),
                 Payload = null,
                 Notify = new Notify
                 {

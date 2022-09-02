@@ -14,7 +14,7 @@ namespace EfficacySend.Utilities
         {
             this.apikey = apikey;
         }
-        public async Task<SendEmailResponse> SendEmailAll(Email se)
+        public async Task<bool> SendEmailAll(Email se)
         {
             if (await Utils.CheckHtml(se.HtmlEmail))
             {
@@ -23,25 +23,10 @@ namespace EfficacySend.Utilities
                 var to = new EmailAddress(se.ToEmail, se.ToName);
                 var msg = MailHelper.CreateSingleEmail(from, to, se.Subject, se.PlainEmail, se.HtmlEmail);
                 var response = await client.SendEmailAsync(msg);
-                var SendEmailResponse = new SendEmailResponse
-                {
-                    Message = "Email Sent",
-                    IsEmailSent = response.IsSuccessStatusCode,
-                    IsHtmlValid = true
-                };
-                return SendEmailResponse;
+              
+                return response.IsSuccessStatusCode;
             }
-            else
-            {
-                var SendEmailResponse = new SendEmailResponse
-                {
-                    Message = "Email Not Sent",
-                    IsEmailSent = false,
-                    IsHtmlValid = false
-                };
-                return SendEmailResponse;
-            }
-
+            return false;
         }
     }
 }
