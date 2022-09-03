@@ -64,7 +64,7 @@ namespace ApiWeb.Controllers
                     });
                 }
                 u.Roles = "User";
-              
+
                 await userService.Register(u);
 
                 var user = await userService.Authenticate(u);
@@ -251,7 +251,9 @@ namespace ApiWeb.Controllers
             {
                 if (await userService.IsUserExists(u.EmailAddress))
                 {
-                    var payloadString =  userService.GetResetPasswordUrl(134);
+                    Guid UserId = await userService.GetUserIdOnEmail(u.EmailAddress);
+                    var payloadString = token.GenerateToken(UserId, "User", "Reset");
+                    await tokenService.SaveToken(UserId, payloadString, TokenType.Reset.ToString());
 
                     var sendEmail = new Email
                     {
@@ -266,7 +268,7 @@ namespace ApiWeb.Controllers
                     await sender.SendEmailAll(sendEmail);
                 }
             }
-            catch(Exception ex) { }
+            catch (Exception ex) { }
 
             return Ok(new ApiResponse
             {
@@ -280,13 +282,116 @@ namespace ApiWeb.Controllers
             });
         }
 
+        [HttpPost("ResetTokenCheck")]
+        [AllowAnonymous]
+        public IActionResult ResetTokenCheck(TheToken intoken)
+        {
+            try { 
+            if (token.IsTokenExpired(intoken.Token))
+            {
+                var apiResponse = new ApiResponse
+                {
+                    Payload = null,
+                    Success = false,
+                    Notify = new Notify
+                    {
+                        Success = false,
+                        Message = $"Token has expired, please try again."
+                    }
+
+                };
+                return Ok(apiResponse);
+            }
+            }
+            catch(Exception ex)
+            {
+                var apiResponse = new ApiResponse
+                {
+                    Payload = null,
+                    Success = false,
+                    Notify = new Notify
+                    {
+                        Success = false,
+                        Message = $"Token has been tampered with."
+                    }
+
+                };
+                return Ok(apiResponse);
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("ResetPassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(LoginResponse lr)
+        {
+            try { 
+            if (token.IsTokenExpired(lr.Tokens.AccessToken))
+            {
+                var apiResponse = new ApiResponse
+                {
+                    Payload = null,
+                    Success = false,
+                    Notify = new Notify
+                    {
+                        Success = false,
+                        Message = $"Token has expired, please try again."
+                    }
+
+                };
+                return Ok(apiResponse);
+            }
+                else
+                {
+                    try
+                    {
+                        lr.User.UserId = token.GetUserId(lr.Tokens.AccessToken);
+                        await userService.UpdatePassword(lr.User);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    var apiResponse = new ApiResponse
+                    {
+                        Payload = null,
+                        Success = true,
+                        Notify = new Notify
+                        {
+                            Success = true,
+                            Message = $"Your password has been changed, please login again to continue"
+                        }
+
+                    };
+                    return Ok(apiResponse);
+                }
+            }
+           catch (Exception ex)
+            {
+                var apiResponse = new ApiResponse
+                {
+                    Payload = null,
+                    Success = false,
+                    Notify = new Notify
+                    {
+                        Success = false,
+                        Message = $"Token has been tampered with."
+                    }
+
+                };
+                return Ok(apiResponse);
+            }
+
+
+           
+        }
 
 
         [HttpGet("GetGoogleOAuthUri")]
         [AllowAnonymous]
         public async Task<IActionResult> GetGoogleOAuthUri()
         {
-
             var GoogleOAuthConfig = configuration.GetSection("GoogleOAuth").Get<GoogleOAuthConfig>();
             string content = "application/json";
             var DocuConfig = await googleApi.HttpGetCall<OpenIdConnectConfig>(GoogleOAuthConfig.Discovery, content);

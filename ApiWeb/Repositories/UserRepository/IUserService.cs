@@ -12,6 +12,8 @@ namespace ApiWeb.Respositories.UserRepository
         Task<User> Authenticate(User u);
         Task<bool> IsUserExists(string EmailAddress);
         string GetResetPasswordUrl(int length);
+        Task<Guid> GetUserIdOnEmail(string email);
+        Task<bool> UpdatePassword(User u);
     }
 
 }

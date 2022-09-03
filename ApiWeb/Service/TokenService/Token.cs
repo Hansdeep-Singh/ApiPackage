@@ -83,7 +83,13 @@ namespace ApiWeb.Service.TokenService
             var decodedValue = handler.ReadJwtToken(token);
             var timestamp = decodedValue?.Payload?.Exp;
             DateTime date = Misc.ConvertFromUnixTimeStamp(timestamp);
-            return (date>DateTimeOffset.UtcNow);
+            return (date<DateTimeOffset.UtcNow);
+        }
+
+        public Guid GetUserId(string token) {
+            var handler = new JwtSecurityTokenHandler();
+            var decodedValue = handler.ReadJwtToken(token);
+            return Guid.Parse(decodedValue.Claims.ElementAt(0).Value);
         }
 
         public async Task<bool> IsCurrentActiveToken() => await IsActiveAcync(GetCurrentAsync());
