@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiWeb", "ApiWeb\ApiWeb.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiPackage", "ApiPackage\ApiPackage.csproj", "{A7F8F81F-8E37-4473-B260-219A0FF25D4E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppContext", "AppContext", "{2DC2D492-C4DC-42AC-B53A-13AF5858B301}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppContext", "AppContext\AppContext.csproj", "{55E20E7F-2E80-46D3-81E5-4923BB94FBB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,10 @@ Global
 		{A7F8F81F-8E37-4473-B260-219A0FF25D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F8F81F-8E37-4473-B260-219A0FF25D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7F8F81F-8E37-4473-B260-219A0FF25D4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55E20E7F-2E80-46D3-81E5-4923BB94FBB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55E20E7F-2E80-46D3-81E5-4923BB94FBB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55E20E7F-2E80-46D3-81E5-4923BB94FBB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55E20E7F-2E80-46D3-81E5-4923BB94FBB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +76,7 @@ Global
 		{9FFFF92D-D80A-48DC-8AE4-6F331F3554FC} = {C66C0ED6-E911-49DE-AD5F-2356318724DC}
 		{C5384BD2-E0D0-4C89-8A3F-79381D9F99B6} = {D1663499-0BF2-4A11-8D95-CC955C0F30B6}
 		{A7F8F81F-8E37-4473-B260-219A0FF25D4E} = {0BA87689-3A23-4C76-9C49-A991E3BBB1C4}
+		{55E20E7F-2E80-46D3-81E5-4923BB94FBB0} = {2DC2D492-C4DC-42AC-B53A-13AF5858B301}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9098343-F6BF-446F-9012-3C92FAAE63B6}

@@ -1,23 +1,25 @@
 ﻿using ApiWeb.Database;
 using ApiWeb.Models;
 using ApiWeb.Repositories.TheRepository;
-using ApiWeb.Respositories.UserRepository;
+using AppContext.Interface;
+using EfficacySend.Models;
 using Logic.Efficacy;
+using Logic.Efficacy.EncryptDecrypt;
 using Microsoft.EntityFrameworkCore;
-
-
-//using bl = BusinessLayer;
 
 namespace ApiWeb.Respositories.UserRepository
 {
     public class UserService : Repository<User>, IUserService
     {
         private readonly DbContext context;
-        public UserService(TheContext context) : base(context)
+        private readonly IApplicationContext applicationContext;
+        public UserService(TheContext context, IApplicationContext applicationContext) : base(context)
         {
             this.context = context;
+            this.applicationContext = applicationContext;
         }
 
+        HashingService hashingService = new HashingService();
 
         public async Task<bool> RegisterDirectViaMock(User u)
         {
@@ -25,7 +27,7 @@ namespace ApiWeb.Respositories.UserRepository
 
             var user = new User
             {
-                Password = Hashing.PasswordHash(u.Password),
+                Password = hashingService.PasswordHash(u.Password),
                 EmailAddress = u.EmailAddress,
                 Roles = u.Roles,
             };
@@ -41,7 +43,7 @@ namespace ApiWeb.Respositories.UserRepository
 
             var user = new User
             {
-                Password = Hashing.PasswordHash(u.Password),
+                Password = hashingService.PasswordHash(u.Password),
                 EmailAddress = u.EmailAddress,
                 Roles = u.Roles,
             };
@@ -55,7 +57,7 @@ namespace ApiWeb.Respositories.UserRepository
             var result = await DbSet.SingleOrDefaultAsync(x => x.UserId == u.UserId);
             if (result != null)
             {
-                result.Password = Hashing.PasswordHash(u.Password);
+                result.Password = hashingService.PasswordHash(u.Password);
             }
             await SaveAsync();
             return true;
@@ -67,8 +69,12 @@ namespace ApiWeb.Respositories.UserRepository
         {
 
             var user = await DbSet.SingleOrDefaultAsync(x => x.EmailAddress == u.EmailAddress);
-            if (user != null && Hashing.PasswordVerify(u.Password, user.Password)) return user;
+            if (user != null && hashingService.PasswordVerify(u.Password, user.Password)) return user;
             return null;
+        }
+        public Task<bool> SendForgetPasswordEmail(Email em)
+        {
+            return applicationContext.SendEmail(em);
         }
 
 

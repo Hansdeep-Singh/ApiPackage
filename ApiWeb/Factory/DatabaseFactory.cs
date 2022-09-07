@@ -1,7 +1,5 @@
 ﻿using ApiWeb.Database;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ApiWeb.Factory
 {

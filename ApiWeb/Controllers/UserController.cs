@@ -32,6 +32,7 @@ namespace ApiWeb.Controllers
         private readonly ITokenService tokenService;
         private readonly GoogleApi googleApi;
         private readonly IConfiguration configuration;
+        //private readonly ILogger<UserController> logger;
 
 
         public UserController(IToken token, IUserService userService, ITokenService tokenService, GoogleApi googleApi, IConfiguration configuration)
@@ -41,6 +42,7 @@ namespace ApiWeb.Controllers
             this.tokenService = tokenService;
             this.googleApi = googleApi;
             this.configuration = configuration;
+       
         }
 
         //Postman > Body > JSON
@@ -104,6 +106,7 @@ namespace ApiWeb.Controllers
             }
             catch (Exception ex)
             {
+                //logger.LogDebug()
                 var notify = new ApiResponse
                 {
                     Payload = null,
@@ -113,12 +116,12 @@ namespace ApiWeb.Controllers
                         Success = false,
                         Message = $"**Something bad happened, Exception{ex.Message}**"
                     }
-
                 };
                 return Ok(notify);
             }
         }
 
+     
 
         [HttpPost("Login")]
         [AllowAnonymous]
@@ -264,8 +267,8 @@ namespace ApiWeb.Controllers
                         PlainEmail = "Hi",
                         HtmlEmail = $"<p>{$"{GoogleOAuthConfig.WebAppUri}/resetpassword?payload={payloadString}"}</p>"
                     };
-                    ISender sender = new Sender("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");
-                    await sender.SendEmailAll(sendEmail);
+                    await userService.SendForgetPasswordEmail(sendEmail);
+                    
                 }
             }
             catch (Exception ex) { }
@@ -382,9 +385,6 @@ namespace ApiWeb.Controllers
                 };
                 return Ok(apiResponse);
             }
-
-
-           
         }
 
 

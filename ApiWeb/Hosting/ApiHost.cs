@@ -34,24 +34,27 @@ namespace ApiWeb.Hosting
             });
 
             var app = builder.Build();
-            if (app.Environment.IsDevelopment())
-            {
 
-            }
-            app.UseCors();
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseMiddleware<TokenManager>();
-            app.UseSession();
+             AppKick start = new(app);
 
-            //https://www.youtube.com/watch?v=VuFQtyRmS0E&t=337s&ab_channel=NickChapsas End points
+            //if (app.Environment.IsDevelopment())
+            //{
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapDefaultControllerRoute();
-            });
-            app.Run();
+            //}
+            //app.UseCors();
+            //app.UseRouting();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
+            //app.UseMiddleware<TokenManager>();
+            //app.UseSession();
+
+            ////https://www.youtube.com/watch?v=VuFQtyRmS0E&t=337s&ab_channel=NickChapsas End points
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapDefaultControllerRoute();
+            //});
+            //app.Run();
         }
 
     }

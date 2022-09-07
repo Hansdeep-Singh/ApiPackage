@@ -1,7 +1,4 @@
-﻿
-
-using ApiWeb.MiddleWare;
-
+﻿using ApiWeb.MiddleWare;
 namespace ApiWeb.Trigger
 {
     public class AppKick
@@ -16,7 +13,7 @@ namespace ApiWeb.Trigger
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-           // app.UseMiddleware<TokenManager>();
+            app.UseMiddleware<TokenManager>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

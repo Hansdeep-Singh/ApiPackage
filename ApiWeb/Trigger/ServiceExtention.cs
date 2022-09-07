@@ -6,6 +6,9 @@ using ApiWeb.Repositories.TokenRepository;
 using ApiWeb.Respositories.UserRepository;
 using ApiWeb.Service.oAuthService;
 using ApiWeb.Service.TokenService;
+using AppContext.Interface;
+using AppContext.Service;
+using Logic.Efficacy.EncryptDecrypt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +23,8 @@ namespace ApiWeb.Trigger
         {
             services.AddHttpContextAccessor();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            //services.AddScoped<IHashingService, HashingService>();
+            services.AddScoped<IApplicationContext, ApplicationContext>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IToken, Token>();
             services.AddScoped<ITokenService, TokenService>();
@@ -56,6 +61,17 @@ namespace ApiWeb.Trigger
             });
             return services;
         }
+
+        public static IServiceCollection Authorisation(this IServiceCollection services)
+        {
+            services.AddAuthorization(options => {
+                options.AddPolicy("HansEnrty", policy => policy.RequireAssertion(context => context.User.HasClaim(c => c.Type == "")));
+            
+            });
+
+            return services;
+        }
+
         public static IServiceCollection Cors(this IServiceCollection services, string[] origins)
         {
             services.AddCors(options =>
