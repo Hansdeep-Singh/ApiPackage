@@ -5,8 +5,9 @@ namespace AppContext.Interface
 {
     public interface IApplicationContext
     {
-        ISessionService SessionService { get; }
         Task<bool> SendEmail(Email email);
-        IHashingService HashingService { get; set; }
+        IHashingService HashingService { get; }
+
+        IServiceProvider serviceProvider { get; }
     }
 }

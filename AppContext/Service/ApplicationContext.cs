@@ -9,24 +9,22 @@ namespace AppContext.Service
 {
     public class ApplicationContext : IApplicationContext, IDisposable
     {
-        private readonly IServiceProvider serviceProvider;
-
-        public ApplicationContext(ISessionService sessionService, IServiceProvider serviceProvider)
+        public IServiceProvider serviceProvider { get; }
+        public ApplicationContext(IServiceProvider serviceProvider)
         {
-            SessionService = sessionService;
             this.serviceProvider = serviceProvider;
 
-            CreateSysService();
+            CreateSysService(this);
         }
 
-        public ISessionService SessionService { get; set; }
+        private Lazy<IHashingService> _hashingService;
+        public IHashingService HashingService  =>_hashingService.Value;
 
-        public IHashingService HashingService { get; set; }
 
-
-        public void CreateSysService()
+        public void CreateSysService(IApplicationContext ctx)
         {
-            HashingService = (IHashingService)serviceProvider.GetService(typeof(IHashingService));
+            _hashingService = new Lazy<IHashingService>(ctx.Create<IHashingService>);
+          //  HashingService = (IHashingService)serviceProvider.GetService(typeof(IHashingService));
         }
 
 

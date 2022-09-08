@@ -13,7 +13,7 @@ namespace AppContext.Extentions
         {
             var type = typeof(TService);
 
-            var service = appCtx.SessionService.ServiceProvider.GetService(typeof(TService));
+            var service = appCtx.serviceProvider.GetService(typeof(TService));
             if (service == null)
             {
                 throw new InvalidOperationException();
