@@ -2,6 +2,7 @@
 using ApiWeb.MiddleWare;
 using ApiWeb.Models;
 using ApiWeb.Trigger;
+using Logic.ConfigureServices;
 
 namespace ApiWeb.Hosting
 {

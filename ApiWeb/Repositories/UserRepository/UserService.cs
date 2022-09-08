@@ -19,7 +19,6 @@ namespace ApiWeb.Respositories.UserRepository
             this.applicationContext = applicationContext;
         }
 
-        HashingService hashingService = new HashingService();
 
         public async Task<bool> RegisterDirectViaMock(User u)
         {
@@ -27,7 +26,7 @@ namespace ApiWeb.Respositories.UserRepository
 
             var user = new User
             {
-                Password = hashingService.PasswordHash(u.Password),
+                Password = applicationContext.HashingService.PasswordHash(u.Password),
                 EmailAddress = u.EmailAddress,
                 Roles = u.Roles,
             };
@@ -39,11 +38,11 @@ namespace ApiWeb.Respositories.UserRepository
 
         public async Task<bool> Register(User u)
         {
-            //l = BusinessLayer.BusinessLogic.CreateLogic();
+          
 
             var user = new User
             {
-                Password = hashingService.PasswordHash(u.Password),
+                Password = applicationContext.HashingService.PasswordHash(u.Password),
                 EmailAddress = u.EmailAddress,
                 Roles = u.Roles,
             };
@@ -57,7 +56,7 @@ namespace ApiWeb.Respositories.UserRepository
             var result = await DbSet.SingleOrDefaultAsync(x => x.UserId == u.UserId);
             if (result != null)
             {
-                result.Password = hashingService.PasswordHash(u.Password);
+                result.Password = applicationContext.HashingService.PasswordHash(u.Password);
             }
             await SaveAsync();
             return true;
@@ -69,7 +68,7 @@ namespace ApiWeb.Respositories.UserRepository
         {
 
             var user = await DbSet.SingleOrDefaultAsync(x => x.EmailAddress == u.EmailAddress);
-            if (user != null && hashingService.PasswordVerify(u.Password, user.Password)) return user;
+            if (user != null && applicationContext.HashingService.PasswordVerify(u.Password, user.Password)) return user;
             return null;
         }
         public Task<bool> SendForgetPasswordEmail(Email em)
