@@ -7,7 +7,7 @@ namespace AppContext.Interface
     {
         Task<bool> SendEmail(Email email);
         IHashingService HashingService { get; }
-
-        IServiceProvider serviceProvider { get; }
+        IServiceProvider ServiceProvider { get; }
+        ISessionService SessionService { get; }
     }
 }

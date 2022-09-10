@@ -8,6 +8,6 @@ namespace AppContext.Interface
 {
     public interface ISessionService 
     {
-        IServiceProvider ServiceProvider { get; }
+        IServiceProvider ServiceProvider { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace ApiWeb.Trigger
         {
             services.AddHttpContextAccessor();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<ISessionService, SessionService>();
+            services.AddSingleton<ISessionService, SessionService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashingService, HashingService>();
             services.AddScoped<IApplicationContext, ApplicationContext>();
@@ -48,7 +48,7 @@ namespace ApiWeb.Trigger
             }).AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
+                x.SaveToken = false;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,

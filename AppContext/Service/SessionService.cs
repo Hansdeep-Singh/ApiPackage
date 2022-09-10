@@ -9,6 +9,11 @@ namespace AppContext.Service
 {
     public class SessionService:  ISessionService
     {
-      public IServiceProvider ServiceProvider { get; }
+        public IServiceProvider ServiceProvider { get; set; }
+        public SessionService(IServiceProvider serviceProvider)
+        {
+            this.ServiceProvider = serviceProvider;
+        }
+     
     }
 }

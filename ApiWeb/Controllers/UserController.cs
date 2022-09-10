@@ -12,6 +12,7 @@ using Logic.Extentions;
 using EfficacySend.Utilities;
 using EfficacySend.Models;
 using static ApiWeb.Constants.AppConsts;
+using Logic.Efficacy;
 
 
 
@@ -443,7 +444,7 @@ namespace ApiWeb.Controllers
             return Redirect($"{GoogleOAuthConfig.WebAppUri}/login?payload={payloadString}");
         }
 
-        [HttpGet("GetUserInfo")]
+        [HttpGet("GetUserInfoId")]
         [AllowAnonymous]
         public IActionResult GetUserInfo(string id)
         {
@@ -454,7 +455,8 @@ namespace ApiWeb.Controllers
         }
 
         [HttpGet("GetUserInfo")]
-        [AllowAnonymous]
+        //[ApiAuthoriseSecurity(10)]
+        //[Authorize]
         public IActionResult GetUserInfo()
         {
             string strName = "authorised Button Result";
@@ -462,7 +464,7 @@ namespace ApiWeb.Controllers
             //string result = Extentions.StringHelper.ChangeFirstLetterCase(strName);
             return Ok(result);
         }
-
+        
         [HttpGet("Auth")]
         public IActionResult Auth()
         {
