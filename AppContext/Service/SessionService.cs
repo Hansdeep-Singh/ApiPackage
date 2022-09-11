@@ -1,4 +1,6 @@
 ﻿using AppContext.Interface;
+using Microsoft.Extensions.DependencyInjection;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,12 @@ namespace AppContext.Service
 {
     public class SessionService:  ISessionService
     {
-        public IServiceProvider ServiceProvider { get; set; }
         public SessionService(IServiceProvider serviceProvider)
         {
-            this.ServiceProvider = serviceProvider;
+            ServiceProvider = serviceProvider;
         }
+
+        public IServiceProvider ServiceProvider { get; set; }
      
     }
 }

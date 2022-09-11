@@ -71,6 +71,7 @@ namespace ApiWeb.Controllers
                 await userService.Register(u);
 
                 var user = await userService.Authenticate(u);
+
                 string Token = token.GenerateToken(user.UserId, user.Roles, TokenType.Refresh.ToString());
                 await tokenService.SaveToken(user.UserId, Token, TokenType.Refresh.ToString());
 
@@ -130,6 +131,7 @@ namespace ApiWeb.Controllers
         {
             try
             {
+                
                 var user = await userService.Authenticate(u);
                 if (user != null)
                 {
@@ -466,9 +468,11 @@ namespace ApiWeb.Controllers
         }
         
         [HttpGet("Auth")]
-        public IActionResult Auth()
+        public async Task<IActionResult> Auth()
         {
-            string strName = "authorised Button Result";
+            
+            var ans = await userService.IsUserExists("hansdeep.singh@hotmail.com");
+            string strName = $"authorised Button Result : {ans}";
             string result = strName.ChangeFirstLetterCase();
             //string result = Extentions.StringHelper.ChangeFirstLetterCase(strName);
             return Ok(result);

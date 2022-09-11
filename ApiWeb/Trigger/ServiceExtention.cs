@@ -23,7 +23,7 @@ namespace ApiWeb.Trigger
         {
             services.AddHttpContextAccessor();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddSingleton<ISessionService, SessionService>();
+            services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashingService, HashingService>();
             services.AddScoped<IApplicationContext, ApplicationContext>();
