@@ -11,17 +11,17 @@ namespace AppContext.Extentions
     {
         public static TService Create<TService>(this IApplicationContext appCtx)
         {
-            var type = typeof(TService);
+            var ans = typeof(TService);
             var service = appCtx.SessionService.ServiceProvider.GetService(typeof(TService));
-            //var service = appCtx.ServiceProvider.GetService(typeof(TService));
             if (service == null)
             {
-                throw new InvalidOperationException();
+                throw new Exception($"Service {typeof(TService)} not found");
             }
-
             return (TService)service;
 
         }
+
+         
 
     }
 }

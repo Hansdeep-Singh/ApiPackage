@@ -13,6 +13,8 @@ using EfficacySend.Utilities;
 using EfficacySend.Models;
 using static ApiWeb.Constants.AppConsts;
 using Logic.Efficacy;
+using AppContext.Interface;
+using AppContext.Extentions;
 
 
 
@@ -33,16 +35,18 @@ namespace ApiWeb.Controllers
         private readonly ITokenService tokenService;
         private readonly GoogleApi googleApi;
         private readonly IConfiguration configuration;
+        private readonly IApplicationContext applicationContext;
         //private readonly ILogger<UserController> logger;
 
 
-        public UserController(IToken token, IUserService userService, ITokenService tokenService, GoogleApi googleApi, IConfiguration configuration)
+        public UserController(IApplicationContext applicationContext, IToken token, IUserService userService, ITokenService tokenService, GoogleApi googleApi, IConfiguration configuration)
         {
             this.token = token;
             this.userService = userService;
             this.tokenService = tokenService;
             this.googleApi = googleApi;
             this.configuration = configuration;
+            this.applicationContext = applicationContext;
        
         }
 
@@ -470,9 +474,11 @@ namespace ApiWeb.Controllers
         [HttpGet("Auth")]
         public async Task<IActionResult> Auth()
         {
-            
-            var ans = await userService.IsUserExists("hansdeep.singh@hotmail.com");
-            string strName = $"authorised Button Result : {ans}";
+            var userService = applicationContext.Create<IUserService>();
+            var hashingService = applicationContext.HashingService;
+            var hashed = hashingService.PasswordHash("asdfsd");
+            var exists = await userService.IsUserExists("hansdeep.singh@hotmail.com");
+            string strName = $"authorised Button Result : {exists} hashed {hashed}";
             string result = strName.ChangeFirstLetterCase();
             //string result = Extentions.StringHelper.ChangeFirstLetterCase(strName);
             return Ok(result);

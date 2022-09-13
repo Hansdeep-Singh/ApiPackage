@@ -19,15 +19,13 @@ namespace ApiWeb.Trigger
 {
     public static class ServiceExtention
     {
-        public static IServiceCollection Services (this IServiceCollection services)
+        public static IServiceCollection Services(this IServiceCollection services)
         {
             services.AddHttpContextAccessor();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ISessionService, SessionService>();
-            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashingService, HashingService>();
             services.AddScoped<IApplicationContext, ApplicationContext>();
-            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IToken, Token>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<TokenManager>();
@@ -35,11 +33,22 @@ namespace ApiWeb.Trigger
             services.AddScoped<GoogleApi>();
             return services;
         }
+
+        public static IServiceCollection ConfigureUserService(this IServiceCollection services)
+        {
+            return services.AddScoped<IUserService, UserService>();
+        }
+
+        public static IServiceCollection UserService(this IServiceCollection services)
+        {
+            services.AddScoped<IUserService, UserService>();
+            return services;
+        }
         public static IServiceCollection HttpCalls(this IServiceCollection services)
         {
             return services.AddHttpClient();
         }
-        public static IServiceCollection Authentication(this IServiceCollection services , string secret )
+        public static IServiceCollection Authentication(this IServiceCollection services, string secret)
         {
             services.AddAuthentication(x =>
             {
@@ -66,9 +75,10 @@ namespace ApiWeb.Trigger
 
         public static IServiceCollection Authorisation(this IServiceCollection services)
         {
-            services.AddAuthorization(options => {
+            services.AddAuthorization(options =>
+            {
                 options.AddPolicy("HansEnrty", policy => policy.RequireAssertion(context => context.User.HasClaim(c => c.Type == "")));
-            
+
             });
 
             return services;

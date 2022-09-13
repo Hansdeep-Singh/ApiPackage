@@ -23,7 +23,6 @@ namespace ApiWeb.Respositories.UserRepository
         public async Task<bool> RegisterDirectViaMock(User u)
         {
             //l = BusinessLayer.BusinessLogic.CreateLogic();
-
             var user = new User
             {
                 Password = applicationContext.HashingService.PasswordHash(u.Password),
@@ -32,14 +31,11 @@ namespace ApiWeb.Respositories.UserRepository
             };
             await context.AddAsync(user);
             await context.SaveChangesAsync();
-
             return true;
         }
 
         public async Task<bool> Register(User u)
         {
-          
-
             var user = new User
             {
                 Password = applicationContext.HashingService.PasswordHash(u.Password),

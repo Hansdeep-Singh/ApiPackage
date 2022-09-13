@@ -24,6 +24,7 @@ namespace ApiWeb.Hosting
             var config = builder.Configuration.GetSection("ConnectionStrings:ConnectionString");
             services.Database(config.Value);
             services.Services();
+            services.UserService();
             services.HttpCalls();
             services.Authentication(secret.SecretKey);
             services.Cors(AppConsts.CORSOrigins);
