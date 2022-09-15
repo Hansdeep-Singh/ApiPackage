@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -12,13 +13,72 @@ namespace Logic.Extentions
     {
         public static string ChangeFirstLetterCase(this string inputString)
         {
-            if (inputString.Length>0)
+            if (inputString.Length > 0)
             {
                 char[] charArray = inputString.ToCharArray();
                 charArray[0] = char.IsUpper(charArray[0]) ? char.ToLower(charArray[0]) : char.ToUpper(charArray[0]);
                 return new string(charArray);
             }
             return inputString;
+        }
+
+        public static List<string> StringToList(this string values, char seperator = ',')
+        {
+            List<string> list = new List<string>();
+            if (!string.IsNullOrEmpty(values))
+            {
+                foreach(var s in values.Split(seperator))
+                {
+                    if(!string.IsNullOrEmpty(s))
+                    {
+                        list.Add(s);
+                    }
+                }
+            }
+            return list;
+        }
+
+        public static string ReplaceSpecialChars(this string value)
+        {
+            if(!string.IsNullOrEmpty(value))
+            {
+                var charMap = new Dictionary<string, string>
+                {
+                    {"","&trade;"},{"'","&#39;" }
+                };
+                foreach(var c in charMap)
+                {
+                    value = value.Replace(c.Key, c.Value);
+                }
+            }
+            return value;
+        }
+
+
+        public static string EncodeNonAsciiCharacters(this string value)
+        {
+            var sb = new StringBuilder();
+            //foreach (var c in value)
+            foreach (char c in value)
+            {
+                if (c > 127)
+                {
+                    var encodedValue = "\\u" + ((int)c).ToString("x4");
+                    sb.Append(encodedValue);
+                }
+                else { sb.Append(c); }
+
+            }
+            return sb.ToString();
+        }
+
+        public static string DecodeEncodedNonAsciiCharacters(this string value)
+        {
+            return Regex.Replace(
+                value,
+                @"\\u(?<Value>)[a-zA-Z0-9]{4}",
+                m => ((char)int.Parse(m.Groups["Value"].Value, System.Globalization.NumberStyles.HexNumber)).ToString()
+                );
         }
 
 

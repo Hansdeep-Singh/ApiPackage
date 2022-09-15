@@ -10,7 +10,7 @@ namespace AppContext.Service
     public class ApplicationContext : IApplicationContext, IDisposable
     {
         public ISessionService SessionService { get; }
-        public IServiceProvider ServiceProvider { get; }
+        
 
         private readonly List<Task> tasks;
         private void TrackTasks(Task task)
@@ -30,7 +30,6 @@ namespace AppContext.Service
         {
             tasks = new List<Task>();
             this.SessionService = SessionService;
-            this.ServiceProvider = ServiceProvider;
             CreateService(this);
         }
 
