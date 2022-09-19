@@ -21,7 +21,7 @@ namespace ApiWeb.Hosting
             services.AddDistributedMemoryCache();
             services.Configure<JwtOptions>(builder.Configuration.GetSection("jwt"));
             var secret = builder.Configuration.GetSection("jwt:jwtAccess").Get<TokenConfig>();
-            var config = builder.Configuration.GetSection("ConnectionStrings:ConnectionString");
+            var config = builder.Configuration.GetSection("ConnectionStrings:ConnectionString"); 
             services.Database(config.Value);
             services.Services();
             services.UserService();

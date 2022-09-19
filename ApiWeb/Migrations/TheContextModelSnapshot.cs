@@ -74,6 +74,9 @@ namespace ApiWeb.Migrations
                     b.Property<string>("Roles")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserId");
 
                     b.ToTable("Users");

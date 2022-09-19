@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiWeb.Migrations
 {
     [DbContext(typeof(TheContext))]
-    [Migration("20220902065046_initial")]
+    [Migration("20220919010452_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,6 +74,9 @@ namespace ApiWeb.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Roles")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
