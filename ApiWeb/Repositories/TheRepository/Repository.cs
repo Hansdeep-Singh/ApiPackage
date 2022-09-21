@@ -9,9 +9,9 @@ namespace ApiWeb.Repositories.TheRepository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly TheContext Context;
+        private readonly DbContext Context;
         public DbSet<T> DbSet { get; set; }
-        public Repository(TheContext Context)
+        public Repository(DbContext Context)
         {
             this.Context = Context;
             DbSet = Context.Set<T>();
