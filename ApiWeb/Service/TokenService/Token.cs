@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+
 using System.Text;
-using System.Threading.Tasks;
+
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 using Microsoft.Extensions.Primitives;
 using ApiWeb.Models;
 using System.Security.Cryptography;
@@ -86,9 +83,9 @@ namespace ApiWeb.Service.TokenService
             return (date<DateTimeOffset.UtcNow);
         }
 
-        public Guid GetUserId(string token) {
+        public Guid GetUserId() {
             var handler = new JwtSecurityTokenHandler();
-            var decodedValue = handler.ReadJwtToken(token);
+            var decodedValue = handler.ReadJwtToken(GetCurrentAsync());
             return Guid.Parse(decodedValue.Claims.ElementAt(0).Value);
         }
 
@@ -96,7 +93,7 @@ namespace ApiWeb.Service.TokenService
         public  async Task DeactivateCurrentAsync() => await DeactivateAsync(GetCurrentAsync());
         public  async Task<bool> IsActiveAcync(string token) => await distributedCache.GetStringAsync(GetKey(token)) == null;
 
-        private string GetCurrentAsync()
+        public string GetCurrentAsync()
         {
             var authorizationHeader = httpContextAccessor.HttpContext.Request.Headers["authorization"];
             return authorizationHeader == StringValues.Empty ? string.Empty : authorizationHeader.Single().Split(" ").Last();

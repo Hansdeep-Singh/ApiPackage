@@ -12,8 +12,9 @@ namespace ApiWeb.Service.TokenService
         Task<bool> IsCurrentActiveToken();
         Task DeactivateCurrentAsync();
         bool IsTokenExpired(string token);
-        Guid GetUserId(string token);
+        Guid GetUserId();
         Task<bool> IsActiveAcync(string token);
         Task DeactivateAsync(string token);
+        string GetCurrentAsync();
     }
 }

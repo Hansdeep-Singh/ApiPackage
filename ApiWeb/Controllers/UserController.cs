@@ -356,7 +356,7 @@ namespace ApiWeb.Controllers
                 {
                     try
                     {
-                        lr.User.UserId = token.GetUserId(lr.Tokens.AccessToken);
+                        lr.User.UserId = token.GetUserId();
                         await userService.UpdatePassword(lr.User);
                     }
                     catch (Exception ex)

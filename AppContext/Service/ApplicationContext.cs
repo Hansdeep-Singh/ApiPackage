@@ -26,7 +26,7 @@ namespace AppContext.Service
             
         }
         
-        public ApplicationContext(ISessionService SessionService, IServiceProvider ServiceProvider)
+        public ApplicationContext(ISessionService SessionService)
         {
             tasks = new List<Task>();
             this.SessionService = SessionService;
@@ -34,9 +34,10 @@ namespace AppContext.Service
         }
 
 
-       
+      
+      
 
-
+        //Hashing
         private Lazy<IHashingService> _hashingService;
         public IHashingService HashingService  =>_hashingService.Value;
 
