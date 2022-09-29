@@ -20,7 +20,6 @@ namespace AppContext.Service
                 tasks.RemoveAll(x => x.Status == TaskStatus.RanToCompletion ||
                 x.Status == TaskStatus.Faulted ||
                 x.Status == TaskStatus.Canceled);
-                
                 tasks.Add(task);
             }
             

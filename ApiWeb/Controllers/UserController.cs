@@ -52,8 +52,8 @@ namespace ApiWeb.Controllers
 
         //Postman > Body > JSON
         [AllowAnonymous]
-        [HttpPost("Register")]
-        public async Task<IActionResult> Register(User u)
+        [HttpPost("RegisterAuthEmail")]
+        public async Task<IActionResult> RegisterAuthEmail(User u)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace ApiWeb.Controllers
 
                 await userService.Register(u);
 
-                var user = await userService.Authenticate(u);
+                var user = await userService.AuthenticateViaEmail(u);
 
                 string Token = token.GenerateToken(user.UserId, user.Roles, TokenType.Refresh.ToString());
                 await tokenService.SaveToken(user.UserId, Token, TokenType.Refresh.ToString());
@@ -127,16 +127,169 @@ namespace ApiWeb.Controllers
             }
         }
 
-     
-
-        [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(User u)
+        [HttpPost("RegisterAuthUserName")]
+        public async Task<IActionResult> RegisterAuthUserName(User u)
         {
             try
             {
-                
-                var user = await userService.Authenticate(u);
+                if (await userService.IsUserExists(u.EmailAddress))
+                {
+                    return Ok(new ApiResponse
+                    {
+                        Payload = null,
+                        Success = false,
+                        Notify = new Notify
+                        {
+                            Success = false,
+                            Message = "This email address is already registered"
+                        }
+                    });
+                }
+                u.Roles = "User";
+
+                await userService.Register(u);
+
+                var user = await userService.AuthenticateViaUserName(u);
+
+                string Token = token.GenerateToken(user.UserId, user.Roles, TokenType.Refresh.ToString());
+                await tokenService.SaveToken(user.UserId, Token, TokenType.Refresh.ToString());
+
+                var tokens = new Tokens
+                {
+                    AccessToken = token.GenerateToken(user.UserId, user.Roles, TokenType.Access.ToString()),
+                    RefreshToken = Token,
+                };
+
+                var userResp = new User
+                {
+                    UserId = user.UserId,
+                    EmailAddress = u.EmailAddress,
+                    Roles = user.Roles
+                };
+
+                var Payload = new LoginResponse
+                {
+                    User = userResp,
+                    Tokens = tokens
+                };
+                var notify = new ApiResponse
+                {
+                    Payload = JsonConvert.SerializeObject(Payload),
+                    Success = true,
+                    Notify = new Notify
+                    {
+                        Success = true,
+                        Message = "**Congratulations you have sucessfully registered**"
+                    }
+
+                };
+                return Ok(notify);
+            }
+            catch (Exception ex)
+            {
+                //logger.LogDebug()
+                var notify = new ApiResponse
+                {
+                    Payload = null,
+                    Success = true,
+                    Notify = new Notify
+                    {
+                        Success = false,
+                        Message = $"**Something bad happened, Exception{ex.Message}**"
+                    }
+                };
+                return Ok(notify);
+            }
+        }
+
+
+
+        [HttpPost("LoginViaUserName")]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginViaUserName(User u)
+        {
+            try
+            {
+                var user = await userService.AuthenticateViaUserName(u);
+                if (user != null)
+                {
+                    string RefreshToken = token.GenerateToken(user.UserId, user.Roles, TokenType.Refresh.ToString());
+                    await tokenService.SaveToken(user.UserId, RefreshToken, TokenType.Refresh.ToString());
+
+                    var User = new User
+                    {
+                        EmailAddress = u.EmailAddress,
+                        UserId = user.UserId,
+                        Roles = user.Roles
+                    };
+
+                    var Tokens = new Tokens
+                    {
+                        AccessToken = token.GenerateToken(user.UserId, user.Roles, TokenType.Access.ToString()),
+                        RefreshToken = RefreshToken,
+                    };
+
+                    var Payload = new LoginResponse
+                    {
+                        User = User,
+                        Tokens = Tokens
+                    };
+                    var apiResponse = new ApiResponse
+                    {
+                        Success = true,
+                        Payload = JsonConvert.SerializeObject(Payload),
+                        Notify = new Notify
+                        {
+                            Success = true,
+                            Message = "**Congratulations**, you have successfully logged in"
+                        }
+
+                    };
+                    return Ok(apiResponse);
+                }
+                else
+                {
+                    var apiResponse = new ApiResponse
+                    {
+                        Payload = null,
+                        Success = false,
+                        Notify = new Notify
+                        {
+                            Success = false,
+                            Message = "Login failed, please check your username or password"
+                        }
+
+                    };
+                    return Ok(apiResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                var apiResponse = new ApiResponse
+                {
+                    Payload = null,
+                    Success = false,
+                    Notify = new Notify
+                    {
+                        Success = false,
+                        Message = $"**Something bad happened, Exception{ex.Message}**"
+                    }
+
+                };
+                return Ok(apiResponse);
+            }
+
+        }
+
+        [HttpPost("LoginViaEmailAddress")]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginViaEmailAddress(User u)
+        {
+            try
+            {
+
+                var user = await userService.AuthenticateViaEmail(u);
                 if (user != null)
                 {
                     string RefreshToken = token.GenerateToken(user.UserId, user.Roles, TokenType.Refresh.ToString());

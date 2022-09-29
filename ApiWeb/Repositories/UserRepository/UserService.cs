@@ -11,7 +11,7 @@ namespace ApiWeb.Respositories.UserRepository
 {
     public class UserService : Repository<User>, IUserService
     {
-        private readonly DbContext context;
+        private readonly DbContext context; // Only because mock service otherwise no need. 
         private readonly IApplicationContext applicationContext;
         public UserService(TheContext context, IApplicationContext applicationContext) : base(context)
         {
@@ -40,6 +40,7 @@ namespace ApiWeb.Respositories.UserRepository
             {
                 Password = applicationContext.HashingService.PasswordHash(u.Password),
                 EmailAddress = u.EmailAddress,
+                UserName = u.UserName,
                 Roles = u.Roles,
             };
             await AddAsync(user);
@@ -60,10 +61,18 @@ namespace ApiWeb.Respositories.UserRepository
 
         public async Task<Guid> GetUserIdOnEmail(string email) => (await DbSet.SingleOrDefaultAsync(x => x.EmailAddress == email)).UserId;
 
-        public async Task<User> Authenticate(User u)
+        public async Task<User> AuthenticateViaEmail(User u)
         {
 
             var user = await DbSet.SingleOrDefaultAsync(x => x.EmailAddress == u.EmailAddress);
+            if (user != null && applicationContext.HashingService.PasswordVerify(u.Password, user.Password)) return user;
+            return null;
+        }
+
+        public async Task<User> AuthenticateViaUserName(User u)
+        {
+
+            var user = await DbSet.SingleOrDefaultAsync(x => x.UserName== u.UserName);
             if (user != null && applicationContext.HashingService.PasswordVerify(u.Password, user.Password)) return user;
             return null;
         }
