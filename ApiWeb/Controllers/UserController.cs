@@ -288,7 +288,6 @@ namespace ApiWeb.Controllers
         {
             try
             {
-
                 var user = await userService.AuthenticateViaEmail(u);
                 if (user != null)
                 {
