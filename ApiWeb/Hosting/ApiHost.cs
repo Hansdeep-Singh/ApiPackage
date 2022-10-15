@@ -19,15 +19,16 @@ namespace ApiWeb.Hosting
             var services = builder.Services;
             services.AddControllers();
             services.AddDistributedMemoryCache();
-            services.Configure<JwtOptions>(builder.Configuration.GetSection("jwt"));
-            var secret = builder.Configuration.GetSection("jwt:jwtAccess").Get<TokenConfig>();
+            services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+            var secret = builder.Configuration.GetSection("Jwt:Access").Get<TokenConfig>();
             var config = builder.Configuration.GetSection("ConnectionStrings:ConnectionString"); 
+            var cors = builder.Configuration.GetSection("Cors:Origins");
             services.Database(config.Value);
             services.Services();
             services.UserService();
             services.HttpCalls();
             services.Authentication(secret.SecretKey);
-            services.Cors(AppConsts.CORSOrigins);
+            services.Cors(cors.Get<string[]>());
             services.AddSession(options =>
             {
                 options.Cookie.Name = "ApiSession";

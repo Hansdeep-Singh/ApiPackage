@@ -4,6 +4,7 @@ using ApiWeb.MiddleWare;
 using ApiWeb.Repositories.TheRepository;
 using ApiWeb.Repositories.TokenRepository;
 using ApiWeb.Respositories.UserRepository;
+using ApiWeb.Service.EnvironmentService;
 using ApiWeb.Service.oAuthService;
 using ApiWeb.Service.TokenService;
 using AppContext.Interface;
@@ -30,6 +31,7 @@ namespace ApiWeb.Trigger
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<TokenManager>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IEnvironmentService, EnvironmentService>();
             services.AddScoped<GoogleApi>();
             return services;
         }
@@ -39,6 +41,11 @@ namespace ApiWeb.Trigger
             return services.AddScoped<IUserService, UserService>();
         }
 
+        public static IServiceCollection ConfigureEnvironmentService(this IServiceCollection services)
+        {
+            services.AddScoped<IEnvironmentService, EnvironmentService>();
+            return services;
+        }
         public static IServiceCollection UserService(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();

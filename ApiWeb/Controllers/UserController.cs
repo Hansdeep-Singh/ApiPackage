@@ -15,6 +15,7 @@ using static ApiWeb.Constants.AppConsts;
 using Logic.Efficacy;
 using AppContext.Interface;
 using AppContext.Extentions;
+using ApiWeb.Service.EnvironmentService;
 
 
 
@@ -36,10 +37,12 @@ namespace ApiWeb.Controllers
         private readonly GoogleApi googleApi;
         private readonly IConfiguration configuration;
         private readonly IApplicationContext applicationContext;
+        private readonly IEnvironmentService environmentService;
+       
         //private readonly ILogger<UserController> logger;
 
 
-        public UserController(IApplicationContext applicationContext, IToken token, IUserService userService, ITokenService tokenService, GoogleApi googleApi, IConfiguration configuration)
+        public UserController(IApplicationContext applicationContext, IEnvironmentService environmentService, IToken token, IUserService userService, ITokenService tokenService, GoogleApi googleApi, IConfiguration configuration)
         {
             this.token = token;
             this.userService = userService;
@@ -47,7 +50,7 @@ namespace ApiWeb.Controllers
             this.googleApi = googleApi;
             this.configuration = configuration;
             this.applicationContext = applicationContext;
-       
+            this.environmentService = environmentService;
         }
 
         //Postman > Body > JSON
@@ -209,6 +212,7 @@ namespace ApiWeb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LoginViaUserName(User u)
         {
+            environmentService.GetConfigurationValue("");
             try
             {
                 var user = await userService.AuthenticateViaUserName(u);

@@ -22,7 +22,6 @@ namespace AppContext.Service
                 x.Status == TaskStatus.Canceled);
                 tasks.Add(task);
             }
-            
         }
         
         public ApplicationContext(ISessionService SessionService)
@@ -31,10 +30,6 @@ namespace AppContext.Service
             this.SessionService = SessionService;
             CreateService(this);
         }
-
-
-      
-      
 
         //Hashing
         private Lazy<IHashingService> _hashingService;
@@ -45,7 +40,6 @@ namespace AppContext.Service
         {
             _hashingService = new Lazy<IHashingService>(ctx.Create<IHashingService>);
         }
-
 
         public async Task<bool> SendEmail(Email email)
         {
@@ -67,8 +61,5 @@ namespace AppContext.Service
             }
             GC.SuppressFinalize(this);
         }
-
-
-
     }
 }

@@ -6,7 +6,6 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.Extensions.Caching.Distributed;
-
 using Microsoft.Extensions.Primitives;
 using ApiWeb.Models;
 using System.Security.Cryptography;
@@ -24,7 +23,7 @@ namespace ApiWeb.Service.TokenService
 
         public override string GenerateToken(Guid UserId, string Role, string Type)
         {
-            var settings = configuration.GetSection($"jwt:{Type}").Get<TokenConfig>();
+            var settings = configuration.GetSection($"Jwt:{Type}").Get<TokenConfig>();
             var tokenKey = Encoding.ASCII.GetBytes(settings.SecretKey);
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -100,7 +99,7 @@ namespace ApiWeb.Service.TokenService
         }
         public  async Task DeactivateAsync(string token) => await distributedCache.SetStringAsync(GetKey(token), " ", new DistributedCacheEntryOptions
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(configuration.GetSection("jwt:jwtAccess").Get<TokenConfig>().ExpiryMinutes)
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(configuration.GetSection("Jwt:Access").Get<TokenConfig>().ExpiryMinutes)
         });
         protected static string GetKey(string token) => $"tokens:{token}:deactivated";
     }
