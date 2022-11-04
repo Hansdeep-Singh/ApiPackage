@@ -391,7 +391,7 @@ namespace ApiWeb.Controllers
                     return response;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -434,7 +434,7 @@ namespace ApiWeb.Controllers
                     
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
 
             return Ok(new ApiResponse
             {
@@ -469,7 +469,7 @@ namespace ApiWeb.Controllers
                 return Ok(apiResponse);
             }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 var apiResponse = new ApiResponse
                 {
@@ -515,7 +515,7 @@ namespace ApiWeb.Controllers
                         lr.User.UserId = token.GetUserId();
                         await userService.UpdatePassword(lr.User);
                     }
-                    catch (Exception ex)
+                    catch (Exception )
                     {
 
                     }
@@ -533,7 +533,7 @@ namespace ApiWeb.Controllers
                     return Ok(apiResponse);
                 }
             }
-           catch (Exception ex)
+           catch (Exception)
             {
                 var apiResponse = new ApiResponse
                 {
