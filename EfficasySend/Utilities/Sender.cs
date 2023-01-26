@@ -16,7 +16,7 @@ namespace EfficacySend.Utilities
         }
         public async Task<bool> SendEmailAll(Email se)
         {
-            if (await Utils.CheckHtml(se.HtmlEmail))
+            if (Utils.CheckHtml(se.HtmlEmail))
             {
                 var client = new SendGridClient(apikey);
                 var from = new EmailAddress(se.FromEmail, se.FromName);
