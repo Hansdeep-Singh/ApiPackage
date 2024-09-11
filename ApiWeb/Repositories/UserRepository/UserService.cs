@@ -1,8 +1,9 @@
-﻿using ApiWeb.Database;
+﻿using ApiContext.Context.Interface;
+using ApiWeb.Database;
 using ApiWeb.Models;
 using ApiWeb.Repositories.TheRepository;
-using AppContext.Interface;
-using EfficacySend.Models;
+
+
 using Logic.Efficacy;
 using Logic.Efficacy.EncryptDecrypt;
 using Microsoft.EntityFrameworkCore;
@@ -76,10 +77,7 @@ namespace ApiWeb.Respositories.UserRepository
             if (user != null && applicationContext.HashingService.PasswordVerify(u.Password, user.Password)) return user;
             return null;
         }
-        public Task<bool> SendForgetPasswordEmail(Email em)
-        {
-            return applicationContext.SendEmail(em);
-        }
+       
 
 
         public async Task<bool> IsUserExists(string EmailAddress) => await DbSet.SingleOrDefaultAsync(x => x.EmailAddress == EmailAddress) != null;

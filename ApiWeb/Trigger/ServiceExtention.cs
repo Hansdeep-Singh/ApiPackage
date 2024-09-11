@@ -1,4 +1,6 @@
 ﻿
+using ApiContext.Context.Interface;
+using ApiContext.Context.Service;
 using ApiWeb.Database;
 using ApiWeb.MiddleWare;
 using ApiWeb.Repositories.TheRepository;
@@ -7,14 +9,12 @@ using ApiWeb.Respositories.UserRepository;
 using ApiWeb.Service.EnvironmentService;
 using ApiWeb.Service.oAuthService;
 using ApiWeb.Service.TokenService;
-using AppContext.Interface;
-using AppContext.Service;
+
 using Logic.Efficacy.EncryptDecrypt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
 
 namespace ApiWeb.Trigger
 {
@@ -74,8 +74,6 @@ namespace ApiWeb.Trigger
                     ValidAudiences = new[] { "http://localhost:4200/" }, // Link of where the site is hosted (could be anything really)
                     ValidIssuer = "https://localhost:44385/" // Link of where the API server is hosted (could be anything really)
                 };
-
-
             });
             return services;
         }

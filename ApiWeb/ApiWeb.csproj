@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+     <TargetFramework>net8.0</TargetFramework>
     <OutputType>Library</OutputType>
     <RepositoryUrl>https://github.com/Hansdeep-Singh/ApiPackage</RepositoryUrl>
     <Version>1.0.25</Version>
@@ -13,8 +13,6 @@
   <ItemGroup>
 
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-
-    <!--<PackageReference Include="Logic" Version="1.0.22" />-->
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.2" />
@@ -27,9 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AppContext\AppContext.csproj" />
-    <ProjectReference Include="..\GoogleOAuth\GoogleOAuth.csproj" />
-    <ProjectReference Include="..\Logic\Logic.csproj" />
+    <ProjectReference Include="..\ApiWeb.ApiBroadcast\ApiWeb.ApiBroadcast.csproj" />
+    <ProjectReference Include="..\ApiWeb.ApiContext\ApiWeb.ApiContext.csproj" />
+    <ProjectReference Include="..\ApiWeb.GoogleOAuth\ApiWeb.GoogleOAuth.csproj" />
+    <ProjectReference Include="..\ApiWeb.Logic\ApiWeb.Logic.csproj" />
+    <ProjectReference Include="..\GoogleOAuth\ApiWeb.GoogleOAuth.csproj" />
   </ItemGroup>
 
 </Project>

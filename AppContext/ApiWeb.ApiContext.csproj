@@ -3,13 +3,12 @@
   <PropertyGroup>
      <TargetFramework>net8.0</TargetFramework>
     <RepositoryUrl>https://github.com/Hansdeep-Singh/ApiPackage</RepositoryUrl>
-    <Version>1.0.1</Version>
+    <Version>1.0.21</Version>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApiWeb\ApiWeb.csproj" />
   </ItemGroup>
 
 </Project>

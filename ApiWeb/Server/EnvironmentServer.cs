@@ -1,8 +1,9 @@
-﻿using ApiWeb.Service.EnvironmentService;
+﻿using ApiContext.Context.Interface;
+using ApiWeb.Service.EnvironmentService;
 using ApiWeb.Trigger;
-using AppContext.ConfigureService;
-using AppContext.Extentions;
-using AppContext.Interface;
+
+using ApiContext.Extentions;
+
 
 namespace ApiWeb.Server
 {
@@ -19,8 +20,8 @@ namespace ApiWeb.Server
         public static IApplicationContext GetCtx()
         {
             var services = new ServiceCollection()
-                .ConfigureEnvironmentService()
-                 .ConfigureAppContext();
+                .ConfigureEnvironmentService();
+                 
             var provider = services.BuildServiceProvider();
             var appCtx = provider.GetService<IApplicationContext>();
             return appCtx;
