@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApiAuthentication\Authentication.csproj" />
     <ProjectReference Include="..\ApiBroadcast\ApiWeb.ApiBroadcast.csproj" />
     <ProjectReference Include="..\ApiContext\ApiWeb.ApiContext.csproj" />
     <ProjectReference Include="..\ApiLogic\ApiWeb.Logic.csproj" />

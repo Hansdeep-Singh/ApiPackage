@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApiContext.Extentions
+namespace ApiContext.Context.Extentions
 {
     public static class ContextExtentions
     {

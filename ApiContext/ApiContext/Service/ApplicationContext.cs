@@ -12,7 +12,7 @@ using ApiWeb.ApiBroadcast.Efficacy.Interface;
 
 using Logic.Services.ConfigService;
 using Logic.Efficacy.EncryptDecrypt;
-using ApiContext.Extentions;
+using ApiContext.Context.Extentions;
 
 namespace ApiContext.Context.Service
 {
