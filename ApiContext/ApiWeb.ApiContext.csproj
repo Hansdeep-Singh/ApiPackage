@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApiBroadcast\ApiWeb.ApiBroadcast.csproj" />
+    <ProjectReference Include="..\ApiLogic\ApiWeb.Logic.csproj" />
     <ProjectReference Include="..\ApiWeb.ApiBroadcast\ApiWeb.ApiBroadcast.csproj" />
     <ProjectReference Include="..\ApiWeb.Logic\ApiWeb.Logic.csproj" />
   </ItemGroup>

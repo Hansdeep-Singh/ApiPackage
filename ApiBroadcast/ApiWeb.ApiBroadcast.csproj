@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApiLogic\ApiWeb.Logic.csproj" />
     <ProjectReference Include="..\ApiWeb.Logic\ApiWeb.Logic.csproj" />
   </ItemGroup>
 

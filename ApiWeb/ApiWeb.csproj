@@ -25,11 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApiWeb.ApiBroadcast\ApiWeb.ApiBroadcast.csproj" />
-    <ProjectReference Include="..\ApiWeb.ApiContext\ApiWeb.ApiContext.csproj" />
-    <ProjectReference Include="..\ApiWeb.GoogleOAuth\ApiWeb.GoogleOAuth.csproj" />
-    <ProjectReference Include="..\ApiWeb.Logic\ApiWeb.Logic.csproj" />
+    <ProjectReference Include="..\ApiBroadcast\ApiWeb.ApiBroadcast.csproj" />
+    <ProjectReference Include="..\ApiContext\ApiWeb.ApiContext.csproj" />
+    <ProjectReference Include="..\ApiLogic\ApiWeb.Logic.csproj" />
     <ProjectReference Include="..\GoogleOAuth\ApiWeb.GoogleOAuth.csproj" />
   </ItemGroup>
+
+
 
 </Project>
