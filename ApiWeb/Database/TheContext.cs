@@ -23,15 +23,11 @@ namespace ApiWeb.Database
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
                    .SetBasePath(Directory.GetCurrentDirectory())
-                   .AddJsonFile("appsettings.json")
+                   .AddJsonFile("appsettings.Development.json")
                    .Build();
                 var connectionString = configuration.GetSection("ConnectionStrings:ConnectionString");
                 optionsBuilder.UseSqlServer(connectionString.Value);
             }
         }
-
-
-
-
     }
 }

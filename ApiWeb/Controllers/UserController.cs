@@ -7,15 +7,15 @@ using ApiWeb.Respositories.UserRepository;
 using ApiWeb.Repositories.TokenRepository;
 using ApiWeb.Service.oAuthService;
 using System.IdentityModel.Tokens.Jwt;
-using GoogleOAuth;
+
 using Logic.Extentions;
-using EfficacySend.Utilities;
-using EfficacySend.Models;
+
 using static ApiWeb.Constants.AppConsts;
 using Logic.Efficacy;
-using AppContext.Interface;
-using AppContext.Extentions;
+
 using ApiWeb.Service.EnvironmentService;
+using GoogleOAuth;
+using ApiContext.Context.Interface;
 
 namespace ApiWeb.Controllers
 {
@@ -415,16 +415,7 @@ namespace ApiWeb.Controllers
                     var payloadString = token.GenerateToken(UserId, "User", "Reset");
                     await tokenService.SaveToken(UserId, payloadString, TokenType.Reset.ToString());
 
-                    var sendEmail = new Email
-                    {
-                        FromEmail = "hans.profession@gmail.com",
-                        FromName = "Hans",
-                        ToEmail = u.EmailAddress,
-                        Subject = "Subject",
-                        PlainEmail = "Hi",
-                        HtmlEmail = $"<p>{$"{GoogleOAuthConfig.WebAppUri}/resetpassword?payload={payloadString}"}</p>"
-                    };
-                    await userService.SendForgetPasswordEmail(sendEmail);
+                  
                     
                 }
             }
@@ -621,18 +612,18 @@ namespace ApiWeb.Controllers
             return Ok(result);
         }
         
-        [HttpGet("Auth")]
-        public async Task<IActionResult> Auth()
-        {
-            var userService = applicationContext.Create<IUserService>();
-            var hashingService = applicationContext.HashingService;
-            var hashed = hashingService.PasswordHash("asdfsd");
-            var exists = await userService.IsUserExists("hansdeep.singh@hotmail.com");
-            string strName = $"authorised Button Result : {exists} hashed {hashed}";
-            string result = strName.ChangeFirstLetterCase();
-            //string result = Extentions.StringHelper.ChangeFirstLetterCase(strName);
-            return Ok(result);
-        }
+        //[HttpGet("Auth")]
+        //public async Task<IActionResult> Auth()
+        //{
+        //    var userService = applicationContext.Create<IUserService>();
+        //    var hashingService = applicationContext.HashingService;
+        //    var hashed = hashingService.PasswordHash("asdfsd");
+        //    var exists = await userService.IsUserExists("hansdeep.singh@hotmail.com");
+        //    string strName = $"authorised Button Result : {exists} hashed {hashed}";
+        //    string result = strName.ChangeFirstLetterCase();
+        //    //string result = Extentions.StringHelper.ChangeFirstLetterCase(strName);
+        //    return Ok(result);
+        //}
 
         [HttpPost("LogOut")]
         public async Task<IActionResult> LogOut()
