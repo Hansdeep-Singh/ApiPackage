@@ -17,18 +17,12 @@ using AppContext.Interface;
 using AppContext.Extentions;
 using ApiWeb.Service.EnvironmentService;
 
-
-
-//https://www.youtube.com/watch?v=7tgLuJ__ZKU
-//https://www.youtube.com/watch?v=rPDvBrlTt2Q&ab_channel=AristotelisPitaridis - Custom Authorise Attribute
 namespace ApiWeb.Controllers
 {
     [ApiController]
     [Produces("application/json")]
     [Route("api/[controller]")]
-    //When making a call make sure to use "api" in the URL because it is defined in the Route
-
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
         private readonly IToken token;

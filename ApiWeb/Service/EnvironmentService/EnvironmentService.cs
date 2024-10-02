@@ -6,7 +6,7 @@
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.Production.json")
+                .AddJsonFile("appsettings.Development.json")
                 .Build();
             return configuration.GetSection(Key).Value;
         }
